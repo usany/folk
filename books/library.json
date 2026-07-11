@@ -23,6 +23,17 @@
       "tags": ["모험", "동물", "협동"],
       "url": "books/02-acorn-village-rescue/",
       "added": "2026-05-22"
+    },
+    {
+      "slug": "03-brave-hedgehog",
+      "title": "꼬마 고슴도치 두리의 첫 밤마실",
+      "subtitle": "어둠을 밝혀준 작은 반딧불이와의 우정",
+      "cover": "books/03-default-story/images/cover.png",
+      "pages": 10,
+      "style": "수채화",
+      "tags": ["용기", "친절", "성장"],
+      "url": "books/03-default-story/",
+      "added": "2026-07-11"
     }
   ]
 }

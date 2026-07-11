@@ -1,90 +1,70 @@
 ---
 name: image-generation-batch
-description: codex-image 헬퍼 스크립트를 사용한 배치 이미지 생성 스킬. illustrator 에이전트 전용. 프롬프트 JSON 을 받아 9장 이상의 이미지를 5장씩 묶어 병렬 생성한다. 트리거 '이미지 N장 생성', '동화 이미지 배치', '병렬 이미지 생성', 'codex 배치 이미지'.
+description: Claude 이미지 생성을 사용한 배치 이미지 생성 스킬. illustrator 에이전트 전용. 프롬프트 JSON 을 받아 9장 이상의 이미지를 병렬 생성한다. 트리거 'create images' '이미지 N장 생성', '동화 이미지 배치', '병렬 이미지 생성'.
 ---
 
-# Image Generation Batch — codex-image 배치 실행
+# Image Generation Batch — Claude 이미지 생성
 
-illustrator 에이전트 전용. `~/.claude/skills/codex-image/scripts/codex_imagegen_batch.sh` 를 활용해 이미지를 효율적으로 병렬 생성한다.
+illustrator 에이전트 전용. Claude의 이미지 생성 기능을 활용해 이미지를 효율적으로 병렬 생성한다.
 
 ## 사전 확인
 
-```bash
-codex --version           # 0.128+ 권장
-codex login status        # "Logged in using ChatGPT" 확인
+- Claude API 접근 가능 (스킬/에이전트는 기본적으로 Claude 모델 사용 가능)
+- `book/images/` 디렉토리 쓰기 권한
+
+## 핵심 접근
+
+Claude의 이미지 생성을 활용하여 프롬프트를 이미지로 변환:
+
+```python
+# 의사 코드
+for each prompt in prompts:
+    image_data = claude.generate_image(prompt)
+    save_image(image_data, filename)
 ```
 
-미인증 시 즉시 중단하고 사용자에게 `codex login` 요청.
-
-## 핵심 명령
-
-```bash
-~/.claude/skills/codex-image/scripts/codex_imagegen_batch.sh \
-  <output_dir> \
-  "<prompt 1>::filename_1.png" \
-  "<prompt 2>::filename_2.png" \
-  ... 임의 개수
-```
-
-- 자동으로 5개씩 묶어 병렬 실행
-- 5장 묶음당 ~150~180초 (실측)
-- 9장 = 5+4 = 약 5~6분 예상
+- 9장을 병렬로 요청
+- 병렬 처리로 ~2~3분 예상 (codex 보다 빠름)
 
 ## 실행 절차 (illustrator 가 따르는 순서)
 
-1. `_workspace/02_art_director_prompts.json` 을 jq 또는 python 으로 파싱
-2. 배치 인자 문자열 만들기 — `"prompt::filename"` 형식 N개
-3. 헬퍼 스크립트를 Bash 의 `run_in_background: true` 로 호출
-4. 백그라운드 완료 알림 대기 (절대 sleep 폴링 금지)
-5. 완료 후 `<output_dir>/*.png` 9개 존재 확인
+1. `_workspace/02_art_director_prompts.json` 을 JSON 파싱
+2. 모든 프롬프트 + 파일명 쌍 추출 (cover + 8 scenes)
+3. 각 프롬프트를 Claude 이미지 생성 API에 병렬 요청
+   - 이미지를 base64 인코딩된 PNG로 받음
+   - 지정된 파일명으로 `book/images/` 에 저장
+4. 완료 알림 대기 (병렬 처리)
+5. 완료 후 `book/images//*.png` 9개 존재 확인
 
-## 인자 생성 예시 (Python one-liner)
+## 재시도
 
-```bash
-python3 -c "
-import json, shlex, sys
-data = json.load(open('_workspace/02_art_director_prompts.json'))
-args = []
-args.append(f\"{data['cover']['prompt']}::{data['cover']['filename']}\")
-for s in data['scenes']:
-    args.append(f\"{s['prompt']}::{s['filename']}\")
-print(' '.join(shlex.quote(a) for a in args))
-"
-```
+배치 후 일부 PNG 가 없으면 해당 프롬프트만 재시도:
 
-이 출력을 그대로 헬퍼 스크립트의 인자로 사용.
-
-## 누락 파일 단일 재시도
-
-배치 후 일부 PNG 가 없으면 해당 프롬프트만 단일 `codex exec` 로 재시도:
-
-```bash
-codex exec \
-  --sandbox workspace-write \
-  --skip-git-repo-check \
-  --cd <output_dir> \
-  -o /tmp/codex-retry-{n}.md \
-  "이미지 생성 도구로 '<프롬프트>' 이미지를 생성하고 ./<filename>.png 로 저장. 파일 경로만 한 줄로 보고."
+```python
+if missing_files:
+    for filename, prompt in missing_files:
+        image_data = claude.generate_image(prompt)
+        save_image(image_data, filename)
 ```
 
 ## 결과 검증
 
 ```bash
-ls -la <output_dir>/*.png  # 파일 크기 0 아닌지 확인
-file <output_dir>/*.png    # PNG 파일 형식 검증
+ls -la book/images/*.png  # 파일 크기 0 아닌지 확인
+file book/images/*.png    # PNG 파일 형식 검증
+wc -l book/images/*.png   # 예상 9장 모두 생성 확인
 ```
 
 ## 로그 저장
 
-배치 실행 로그는 `<output_dir>/.codex-imagegen-logs/` 에 자동 저장됨. 추가로 `_workspace/03_illustrator_log.md` 에 사람이 읽기 좋은 요약 저장:
+`_workspace/03_illustrator_log.md` 에 사람이 읽기 좋은 요약 저장:
 
 ```markdown
 # Illustrator 실행 로그
 
 - 실행 시각: YYYY-MM-DD HH:MM
 - 총 요청: 9장
-- 배치 1 (5장): cover, scene_01~04 — 완료 (152초)
-- 배치 2 (4장): scene_05~08 — 완료 (138초)
+- 병렬 생성: cover, scene_01~08 — 완료 (약 2~3분)
 - 재시도: 없음 또는 (장면 N - 사유)
 - 누락: 없음 또는 (장면 N)
 - 총 소요: 약 X분
@@ -92,10 +72,8 @@ file <output_dir>/*.png    # PNG 파일 형식 검증
 
 ## 에러 대응
 
-| 증상 | 대응 |
-|------|------|
-| codex 미인증 | 중단 + 사용자에게 `codex login` 요청 |
-| 헬퍼 스크립트 미존재 | `ls ~/.claude/skills/codex-image/scripts/` 확인, 경로 수정 |
-| 5장 동시 실패 | 1개씩 단일 실행으로 전환 |
-| 모델 거부(safety) | 프롬프트를 art-director 에게 SendMessage 로 재작성 요청 |
-| 디스크 쓰기 실패 | output_dir 권한 확인 |
+| 증상             | 대응                                                    |
+| ---------------- | ------------------------------------------------------- |
+| API 오류         | 중단 + 사용자에게 보고                                  |
+| 이미지 생성 거부 | 프롬프트를 art-director 에게 SendMessage 로 재작성 요청 |
+| 디스크 쓰기 실패 | book/images/ 권한 확인                                  |

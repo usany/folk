@@ -1,0 +1,74 @@
+{
+  "title": "꼬마 고슴도치 두리의 첫 밤마실",
+  "style_guide": {
+    "art_style": "Soft watercolor children's book illustration with visible paper texture and gentle color bleeds, hand-painted brush strokes, tender storybook feel",
+    "color_palette": "Warm amber and orange sunset tones shifting into deep indigo, navy blue and violet night hues, accented by glowing golden-yellow firefly light and soft silver moonlight; cozy earthy browns for the hedgehog and forest",
+    "mood": "Cozy, gentle and dreamy, moving from timid nighttime fear to warm wonder and quiet courage; magical yet calm and reassuring for young children",
+    "character_descriptions": {
+      "protagonist": "Duri, a tiny round baby hedgehog with soft light-brown quills, a small pinkish nose, big round shy eyes and little brown paws, expressive and cuddly, always small in frame",
+      "supporting": "Byeori, a tiny baby firefly glowing soft warm yellow with one slightly drooping wing and a gentle round face; Grandpa Owl, a plump kindly owl with round spectacle-like eyes and soft feathers perched on a branch; a family of many fireflies twinkling like little golden stars"
+    },
+    "environment_style": "A soft-edged watercolor forest: mossy tree trunks, dewy grass, tall reeds by a calm stream, glowing round full moon and starry sky; light glows and reflections rendered with luminous washes and gentle blooms of color, generous negative space at the top for text overlay",
+    "style_suffix": "Soft watercolor children's book illustration, hand-painted texture with gentle color bleeds and visible paper grain, warm and dreamy storybook mood, tender child-friendly composition with soft rounded shapes and glowing light, generous calm negative space at the top for text. No text, no letters, no words, no watermark, no signature. Not photorealistic, no dark horror, no scary elements."
+  },
+  "character_signatures": {
+    "Duri": "Duri, a tiny round baby hedgehog with soft light-brown quills, a small pinkish nose, big round shy eyes and little brown paws",
+    "Byeori": "Byeori, a tiny baby firefly glowing soft warm yellow with one slightly drooping wing"
+  },
+  "prompts": [
+    {
+      "image_number": 1,
+      "type": "cover",
+      "scene_reference": "Cover — title of the book",
+      "english_prompt": "Soft watercolor children's book cover illustration. Duri, a tiny round baby hedgehog with soft light-brown quills, a small pinkish nose, big round shy eyes and little brown paws, walks happily along a moonlit forest path, his back quills gently glowing with tiny golden firefly lights like a little lantern. Byeori, a tiny baby firefly glowing soft warm yellow with one slightly drooping wing, floats beside him. A big round full moon and a few soft stars fill the night sky above. Centered heart-warming composition with a large empty glowing sky area at the top reserved for the title text. Warm golden firefly glow against a deep indigo and violet night, cozy and magical mood. No text, no letters, no words, no watermark, no signature. Not photorealistic, no dark horror, no scary elements."
+    },
+    {
+      "image_number": 2,
+      "type": "scene",
+      "scene_reference": "Scene 1 — 낙엽 이불 속 두리",
+      "english_prompt": "Soft watercolor children's book illustration. Inside a cozy burrow beneath the base of a large mossy tree, Duri, a tiny round baby hedgehog with soft light-brown quills, a small pinkish nose, big round shy eyes and little brown paws, hides under a blanket of brown autumn leaves pulled up to the tip of his nose, with a timid frightened expression. Outside the burrow a warm orange sunset glows through the forest, contrasting with the snug dim interior. Wide gentle composition with soft sky and treetops at the top for text. Warm amber and orange evening light, cozy but slightly fearful dreamy mood. Soft watercolor texture with gentle color bleeds and visible paper grain. No text, no letters, no words, no watermark, no signature. Not photorealistic, no dark horror, no scary elements."
+    },
+    {
+      "image_number": 3,
+      "type": "scene",
+      "scene_reference": "Scene 2 — 창밖의 작은 불빛",
+      "english_prompt": "Soft watercolor children's book illustration. At the dark entrance of a tree-root burrow, Byeori, a tiny baby firefly glowing soft warm yellow with one slightly drooping wing, hovers just outside, its gentle yellow light softly staining the surrounding blades of grass. Inside the burrow, only the nose and big round shy eyes of Duri, a tiny round baby hedgehog with soft light-brown quills and a small pinkish nose, peek out from under his leaf blanket. Deep indigo-violet night background with a luminous soft glow of firefly light blooming outward. Gentle composition with calm dark sky at the top for text. Tender curious mood, soft watercolor light bleeds and paper texture. No text, no letters, no words, no watermark, no signature. Not photorealistic, no dark horror, no scary elements."
+    },
+    {
+      "image_number": 4,
+      "type": "scene",
+      "scene_reference": "Scene 3 — 용기를 낸 첫걸음",
+      "english_prompt": "Soft watercolor children's book illustration. Duri, a tiny round baby hedgehog with soft light-brown quills, a small pinkish nose, big round shy eyes and little brown paws, takes his first brave step out of the burrow onto a moonlit forest path, a nervous but determined look in his eyes. Byeori, a tiny baby firefly glowing soft warm yellow with one slightly drooping wing, sits safely nestled among the quills on his back, casting a warm yellow glow. Dewy grass underfoot and a large glowing full moon in the background lighting the gentle path. Soft silver moonlight and warm firefly accent, hopeful courageous mood. Wide composition with moonlit sky at the top for text. Soft watercolor tones with gentle bleeds and paper grain. No text, no letters, no words, no watermark, no signature. Not photorealistic, no dark horror, no scary elements."
+    },
+    {
+      "image_number": 5,
+      "type": "scene",
+      "scene_reference": "Scene 4 — 무서운 그림자",
+      "english_prompt": "Soft watercolor children's book illustration. A large tree casts a long shadow in the moonlight, and perched on a branch above sits Grandpa Owl, a plump kindly owl with round spectacle-like gentle eyes and soft feathers, wearing a warm friendly expression. Below, Duri, a tiny round baby hedgehog with soft light-brown quills, a small pinkish nose and big round eyes, is startled and curls slightly into a ball, while Byeori, a tiny baby firefly glowing soft warm yellow with one slightly drooping wing, still glows beside him. Navy blue and silver watercolor night, a moment that first feels scary but turns warm and reassuring. Gentle composition with dark starry sky at the top for text. Soft watercolor washes with paper texture. No text, no letters, no words, no watermark, no signature. Not photorealistic, no dark horror, no scary elements."
+    },
+    {
+      "image_number": 6,
+      "type": "scene",
+      "scene_reference": "Scene 5 — 반짝이는 길 안내",
+      "english_prompt": "Soft watercolor children's book illustration. Byeori, a tiny baby firefly glowing brightly soft warm yellow with one slightly drooping wing, lights up the path ahead, while Duri, a tiny round baby hedgehog with soft light-brown quills, a small pinkish nose, big round eyes and little brown paws, walks bravely forward following the glow with a bright relaxed happy smile. Tall reeds and sparkling wildflowers line both sides of the path, and firefly light reflects glittering in a small water puddle. Warm golden-yellow light blending with soft teal-green watercolor tones, cheerful and reassuring mood. Wide composition with soft night sky at the top for text. Soft watercolor bleeds and paper grain. No text, no letters, no words, no watermark, no signature. Not photorealistic, no dark horror, no scary elements."
+    },
+    {
+      "image_number": 7,
+      "type": "scene",
+      "scene_reference": "Scene 6 — 개울가의 반딧불이 가족",
+      "english_prompt": "Soft watercolor children's book illustration. At the edge of a calm quiet stream, dozens of fireflies twinkle and drift like little golden stars in a magical scene, reflecting their glowing light in the water like a galaxy. Byeori, a tiny baby firefly glowing soft warm yellow with one slightly drooping wing, flies joyfully into the arms of its firefly parents, while Duri, a tiny round baby hedgehog with soft light-brown quills, a small pinkish nose and big round eyes, watches with a moved, touched expression. Rich luminous golden firefly clusters against a deep indigo night, wondrous and heartfelt mood. Gentle composition with glowing starry sky at the top for text. Rich soft watercolor blooms and paper texture. No text, no letters, no words, no watermark, no signature. Not photorealistic, no dark horror, no scary elements."
+    },
+    {
+      "image_number": 8,
+      "type": "scene",
+      "scene_reference": "Scene 7 — 고마움의 선물",
+      "english_prompt": "Soft watercolor children's book illustration. A group of fireflies circles around Duri, a tiny round baby hedgehog with soft light-brown quills, a small pinkish nose, big round eyes and little brown paws, gently placing a tiny warm yellow light onto the tip of each of his back quills, so his whole small body glows softly like a lantern, with an overwhelmed grateful expression. Above the stream, Byeori's firefly family flies in a soft heart shape. Magical warm golden light against the blue watercolor night, tender and enchanting mood. Gentle composition with glowing night sky at the top for text. Soft watercolor contrast of gold and blue with paper grain. No text, no letters, no words, no watermark, no signature. Not photorealistic, no dark horror, no scary elements."
+    },
+    {
+      "image_number": 9,
+      "type": "scene",
+      "scene_reference": "Scene 8 — 빛나는 고슴도치의 밤마실",
+      "english_prompt": "Soft watercolor children's book illustration. Duri, a tiny round baby hedgehog with soft light-brown quills, a small pinkish nose, big round eyes and little brown paws, walks bravely and happily along the night forest path, his back glowing softly like a little lantern and gently lighting the darkness around him, with a wide joyful contented smile. His cozy burrow at the base of a tree is visible in the distance. A big round full moon and a sky full of twinkling stars fill the background. Peaceful proud and warm ending mood, warm golden glow against a calm indigo night. Wide composition with starry sky at the top for text. Soft warm cozy watercolor finish with gentle bleeds and paper texture. No text, no letters, no words, no watermark, no signature. Not photorealistic, no dark horror, no scary elements."
+    }
+  ]
+}
