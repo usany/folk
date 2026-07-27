@@ -1,45 +1,61 @@
 <!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0b0e2a">
-  <title>달빛 도서관</title>
-  <meta name="description" content="AI가 그리고 쓴 동화책 모음 — 달빛 도서관">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="library.css">
-</head>
-<body>
-  <div class="stars-bg" aria-hidden="true"></div>
-  <div class="moon-deco" aria-hidden="true"></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>달빛 도서관</title>
+    <link rel="stylesheet" href="library.css" />
+  </head>
+  <body>
+    <div class="stars-bg" aria-hidden="true"></div>
+    <header class="hero">
+      <div class="hero-content">
+        <h1 id="site-title">달빛 도서관</h1>
+        <p id="tagline">AI가 그린 동화책 모음</p>
+        <p class="hero-description">마법 같은 이야기와 아름다운 그림으로 가득한 도서관에 오신 것을 환영합니다</p>
+      </div>
+    </header>
 
-  <header class="hero">
-    <div class="hero-inner">
-      <span class="hero-mark">A · I · LIBRARY</span>
-      <h1 id="site-title">달빛 도서관</h1>
-      <p id="tagline">AI가 그리고 쓴 동화책 모음</p>
-    </div>
-  </header>
+    <main class="shelf">
+      <!-- Featured Section -->
+      <section class="featured-section" id="featured-section" style="display: none;">
+        <div class="section-header">
+          <h2>✨ 추천 도서</h2>
+          <p class="section-subtitle">가장 인기 있는 이야기</p>
+        </div>
+        <div id="featured-grid" class="featured-grid"></div>
+      </section>
 
-  <main class="shelf">
-    <div class="shelf-header">
-      <h2>서가</h2>
-      <span id="book-count" class="count"></span>
-    </div>
-    <div id="book-grid" class="book-grid" aria-label="동화책 목록"></div>
-  </main>
+      <!-- Recent Section -->
+      <section class="recent-section" id="recent-section" style="display: none;">
+        <div class="section-header">
+          <h2>📖 최신 추가</h2>
+          <p class="section-subtitle">가장 최근에 나온 이야기</p>
+        </div>
+        <div id="recent-grid" class="recent-grid"></div>
+      </section>
 
-  <footer class="footer">
-    <div class="footer-left">
-      <span>📚 AI 자동 제작 동화 라이브러리</span>
-    </div>
-    <div class="footer-right">
-      <a href="https://github.com/revfactory/moonlight-library" target="_blank" rel="noopener">GitHub</a>
-    </div>
-  </footer>
+      <!-- All Books Section -->
+      <section class="all-books-section">
+        <div class="section-header">
+          <h2>📚 전체 컬렉션</h2>
+          <p class="section-subtitle">모든 동화책 보기</p>
+        </div>
+        <div id="book-grid" class="book-grid"></div>
+      </section>
+    </main>
 
-  <script src="library.js"></script>
-</body>
+    <footer class="footer">
+      <div class="footer-content">
+        <p>
+          <a id="github-link" href="#">🔗 GitHub</a>
+          <span class="divider">·</span>
+          <span>AI 자동 제작 동화 라이브러리</span>
+        </p>
+        <p class="footer-meta" id="library-stats"></p>
+      </div>
+    </footer>
+
+    <script src="library.js"></script>
+  </body>
 </html>

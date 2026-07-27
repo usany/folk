@@ -1,77 +1,126 @@
-// 달빛 도서관 — 라이브러리 홈
-(() => {
-  const INLINE_FALLBACK = {
-    "site_title": "달빛 도서관",
-    "tagline": "AI가 그리고 쓴 동화책 모음",
-    "books": [
-      { "slug": "01-moonlight-library", "title": "달빛 도서관과 보리", "subtitle": "잠 못 드는 밤, 책 한 권이 날아왔어요", "cover": "books/01-moonlight-library/images/cover.png", "pages": 10, "style": "수채화", "tags": ["우정", "상상", "잠자리"], "url": "books/01-moonlight-library/", "added": "2026-05-22" },
-      { "slug": "02-acorn-village-rescue", "title": "도토리 마을 구출 작전", "subtitle": "사라진 도토리 시계와 다섯 친구의 모험", "cover": "books/02-acorn-village-rescue/images/cover.png", "pages": 32, "style": "doodle", "tags": ["모험", "동물", "협동"], "url": "books/02-acorn-village-rescue/", "added": "2026-05-22" }
-    ]
-  };
-
-  async function loadLibrary() {
-    try {
-      const res = await fetch('books/library.json', { cache: 'no-store' });
-      if (!res.ok) throw new Error('library.json fetch failed');
-      return await res.json();
-    } catch (e) {
-      console.info('[library] fetch unavailable (likely file://), using inline fallback.');
-      return INLINE_FALLBACK;
-    }
-  }
-
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, (c) => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[c]));
-  }
-
-  function renderCard(book) {
-    const cover = book.cover
-      ? `<div class="card-cover" style="background-image:url('${escapeHtml(book.cover)}')"></div>`
-      : `<div class="card-cover"><div class="placeholder">표지 준비 중</div></div>`;
-    const pages = book.pages ? `<span class="badge">${book.pages}p</span>` : '';
-    const style = book.style ? `<span class="badge style">${escapeHtml(book.style)}</span>` : '';
-    const tags = (book.tags || []).slice(0, 2).map(t => `<span class="badge tag">${escapeHtml(t)}</span>`).join('');
-    const subtitle = book.subtitle ? `<p class="card-subtitle">${escapeHtml(book.subtitle)}</p>` : '';
-    return `
-      <a class="book-card" href="${escapeHtml(book.url)}" aria-label="${escapeHtml(book.title)} 읽기">
-        ${cover}
-        <div class="card-info">
-          <h2>${escapeHtml(book.title)}</h2>
-          ${subtitle}
-          <div class="card-meta">
-            ${pages}${style}${tags}
-          </div>
+function createBookCard(book, isFeatured = false) {
+  const coverImg = book.cover || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 400%22%3E%3Crect fill=%22%23666%22 width=%22300%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-size=%2216%22%3EBook Cover%3C/text%3E%3C/svg%3E';
+  const cardClass = isFeatured ? 'featured-book-card' : 'book-card';
+  return `
+    <a class="${cardClass}" href="${book.url}" aria-label="${book.title}">
+      <div class="card-cover" style="background-image: url('${coverImg}')"></div>
+      <div class="card-info">
+        <h2>${book.title}</h2>
+        <p class="card-subtitle">${book.subtitle || ''}</p>
+        <div class="card-meta">
+          <span class="badge">${book.pages}p</span>
+          <span class="badge style">${book.style || 'Style'}</span>
+          ${book.age ? `<span class="badge">${book.age}</span>` : ''}
         </div>
-      </a>
-    `;
+      </div>
+    </a>
+  `;
+}
+
+async function initLibrary() {
+  const gridEl = document.getElementById('book-grid');
+  const featuredGridEl = document.getElementById('featured-grid');
+  const recentGridEl = document.getElementById('recent-grid');
+  const featuredSectionEl = document.getElementById('featured-section');
+  const recentSectionEl = document.getElementById('recent-section');
+  const siteTitleEl = document.getElementById('site-title');
+  const taglineEl = document.getElementById('tagline');
+  const githubLinkEl = document.getElementById('github-link');
+  const libraryStatsEl = document.getElementById('library-stats');
+
+  let manifest = null;
+
+  try {
+    const res = await fetch('books/library.json');
+    if (!res.ok) throw new Error('Failed to load manifest');
+    manifest = await res.json();
+  } catch (err) {
+    console.error('Failed to load books/library.json:', err);
+    // Fallback manifest with current book
+    manifest = {
+      library: {
+        title: '달빛 도서관',
+        tagline: 'AI가 그린 동화책 모음',
+        github: 'https://github.com/revfactory/fairy-tale-moonlight-library'
+      },
+      books: [
+        {
+          id: '01-komi-firefly',
+          title: '반딧불이 꼬미의 작은 불빛',
+          subtitle: '가장 작은 빛이 가장 큰 용기가 되었어요',
+          url: 'books/01-komi-firefly/',
+          cover: 'books/01-komi-firefly/images/cover.png',
+          pages: 8,
+          style: '수채화',
+          age: '4-7세',
+          theme: '우정·용기',
+          featured: true
+        }
+      ]
+    };
   }
 
-  async function init() {
-    const data = await loadLibrary();
-    document.title = data.site_title || '달빛 도서관';
-    const titleEl = document.getElementById('site-title');
-    const taglineEl = document.getElementById('tagline');
-    if (titleEl && data.site_title) titleEl.textContent = data.site_title;
-    if (taglineEl && data.tagline) taglineEl.textContent = data.tagline;
-
-    const grid = document.getElementById('book-grid');
-    const count = document.getElementById('book-count');
-    const books = data.books || [];
-    if (count) count.textContent = books.length === 0 ? '비어 있음' : `${books.length}권의 책`;
-
-    if (books.length === 0) {
-      grid.innerHTML = `
-        <div class="empty-state">
-          ✨ 곧 새 책이 도착해요
-          <span>AI 동화 작가들이 첫 이야기를 그리는 중...</span>
-        </div>`;
-      return;
+  // Update header
+  if (manifest.library) {
+    if (manifest.library.title) {
+      siteTitleEl.textContent = manifest.library.title;
+      document.title = manifest.library.title;
     }
-
-    grid.innerHTML = books.map(renderCard).join('');
+    if (manifest.library.tagline) {
+      taglineEl.textContent = manifest.library.tagline;
+    }
+    if (manifest.library.github) {
+      githubLinkEl.href = manifest.library.github;
+    }
   }
 
-  init();
-})();
+  // Render books
+  const books = manifest.books || [];
+
+  if (books.length === 0) {
+    gridEl.innerHTML = `
+      <div class="empty-state">
+        <h2>📚 아직 책이 없어요</h2>
+        <p>첫 번째 동화책을 추가해 주세요!</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Separate featured and recent books
+  const featured = books.filter(b => b.featured).slice(0, 1);
+  const recent = books.slice(0, 3);
+  const all = books;
+
+  // Render featured section
+  if (featured.length > 0) {
+    featuredSectionEl.style.display = 'block';
+    featuredGridEl.innerHTML = featured
+      .map(book => createBookCard(book, true))
+      .join('');
+  }
+
+  // Render recent section
+  if (books.length > 1) {
+    recentSectionEl.style.display = 'block';
+    recentGridEl.innerHTML = recent
+      .map(book => createBookCard(book, false))
+      .join('');
+  }
+
+  // Render all books
+  gridEl.innerHTML = all
+    .map(book => createBookCard(book, false))
+    .join('');
+
+  // Update library stats
+  const totalPages = books.reduce((sum, b) => sum + (b.pages || 0), 0);
+  libraryStatsEl.textContent = `${books.length}권 · 총 ${totalPages}페이지`;
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLibrary);
+} else {
+  initLibrary();
+}

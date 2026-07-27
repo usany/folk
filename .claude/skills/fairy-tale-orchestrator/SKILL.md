@@ -1,6 +1,6 @@
 ---
 name: fairy-tale-orchestrator
-description: "동화책 자동 제작 오케스트레이터. 시나리오 작성부터 이미지 생성, HTML 책 뷰어 빌드까지 6명의 에이전트 팀(storyteller, art-director, illustrator, book-builder, qa-reviewer, librarian)을 조율한다. 단편(6~10페이지)과 장편(30+페이지) 모두 지원. doodle/watercolor/Ghibli/flat 스타일 선택 가능. 트리거: '동화책 만들어', '동화 만들어줘', '그림책 제작', '두 번째 동화', '새 동화', '동물 동화', '모험 동화', '장편 동화', '챕터 동화', 'doodle 동화', '색연필 동화', '아이용 책 만들기', 'fairy tale book', 'storybook', '동화책 뷰어'. 후속 작업: '동화 다시 써', '이미지 다시 그려', '장면 N 수정', '스토리 보완', '뷰어 디자인 변경', '이전 책 개선', '책 업데이트', '라이브러리 갱신', '도서관 홈 수정' 등 동화 관련 모든 후속 요청도 반드시 이 스킬을 사용."
+description: "동화책 자동 제작 오케스트레이터. 시나리오 작성부터 이미지 생성, HTML 책 뷰어 빌드까지 6명의 에이전트 팀(storyteller, art-director, illustrator, book-builder, qa-reviewer, librarian)을 조율한다. 단편(6~10페이지)과 장편(30+페이지) 모두 지원. doodle/watercolor/Ghibli/flat 스타일 선택 가능. 트리거: 'need book', '동화책 만들어', '동화 만들어줘', '그림책 제작', '두 번째 동화', '새 동화', '동물 동화', '모험 동화', '장편 동화', '챕터 동화', 'doodle 동화', '색연필 동화', '아이용 책 만들기', 'fairy tale book', 'storybook', '동화책 뷰어'. 후속 작업: '동화 다시 써', '이미지 다시 그려', '장면 N 수정', '스토리 보완', '뷰어 디자인 변경', '이전 책 개선', '책 업데이트', '라이브러리 갱신', '도서관 홈 수정' 등 동화 관련 모든 후속 요청도 반드시 이 스킬을 사용."
 ---
 
 # Fairy Tale Orchestrator — 동화책 제작 통합 워크플로우
@@ -9,21 +9,21 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 ## 실행 모드: 하이브리드
 
-| Phase | 모드 | 이유 |
-|-------|------|------|
-| Phase 2 (스토리+아트디렉션) | 에이전트 팀 | storyteller ↔ art-director 가 캐릭터/장면 합의 필요 |
-| Phase 3 (이미지 생성) | 서브 에이전트 | illustrator 단일이 codex-image 배치를 실행, 팀 통신 오버헤드 불필요 |
-| Phase 4 (뷰어 빌드 + QA) | 에이전트 팀 | book-builder ↔ qa-reviewer 가 즉시 피드백 교환 |
+| Phase                       | 모드          | 이유                                                                |
+| --------------------------- | ------------- | ------------------------------------------------------------------- |
+| Phase 2 (스토리+아트디렉션) | 에이전트 팀   | storyteller ↔ art-director 가 캐릭터/장면 합의 필요                 |
+| Phase 3 (이미지 생성)       | 서브 에이전트 | illustrator 단일이 codex-image 배치를 실행, 팀 통신 오버헤드 불필요 |
+| Phase 4 (뷰어 빌드 + QA)    | 에이전트 팀   | book-builder ↔ qa-reviewer 가 즉시 피드백 교환                      |
 
 ## 에이전트 구성
 
-| 팀원 | agent_type | 역할 | 출력 |
-|------|-----------|------|------|
-| storyteller | storyteller | 8장면 동화 시나리오 작성 | `_workspace/01_storyteller_scenario.json` |
-| art-director | art-director | 비주얼 스타일 + 영문 프롬프트 9개 | `_workspace/02_art_director_prompts.json` |
-| illustrator | illustrator | codex-image 로 PNG 9장 생성 | `book/images/cover.png + scene_01~08.png` |
-| book-builder | book-builder | HTML 책 뷰어 빌드 | `book/index.html + style.css + book.js + book.json` |
-| qa-reviewer | qa-reviewer | 통합 정합성 검증 | `_workspace/04_qa_report.md` |
+| 팀원         | agent_type   | 역할                              | 출력                                                |
+| ------------ | ------------ | --------------------------------- | --------------------------------------------------- |
+| storyteller  | storyteller  | 8장면 동화 시나리오 작성          | `_workspace/01_storyteller_scenario.json`           |
+| art-director | art-director | 비주얼 스타일 + 영문 프롬프트 9개 | `_workspace/02_art_director_prompts.json`           |
+| illustrator  | illustrator  | codex-image 로 PNG 9장 생성       | `book/images/cover.png + scene_01~08.png`           |
+| book-builder | book-builder | HTML 책 뷰어 빌드                 | `book/index.html + style.css + book.js + book.json` |
+| qa-reviewer  | qa-reviewer  | 통합 정합성 검증                  | `_workspace/04_qa_report.md`                        |
 
 ## 워크플로우
 
@@ -102,18 +102,19 @@ book/index.html              04_qa_report.md
 
 ## 에러 핸들링
 
-| 상황 | 전략 |
-|------|------|
-| codex 미인증 | Phase 1에서 즉시 중단, 사용자에게 `codex login` 요청 |
-| storyteller 실패 | 기본 동화 템플릿 (별빛 우정 8장면) 으로 폴백 |
-| 이미지 일부 누락 | 누락 장면 1회 재시도, 그래도 실패 시 placeholder + 보고서에 명시 |
-| 이미지 전체 실패 | 사용자에게 보고, 텍스트만 있는 뷰어 빌드 여부 확인 |
-| book-builder 실패 | 최소 단일 페이지 fallback HTML 생성 |
-| qa-reviewer FAIL | 문제 모듈에게 1회 수정 요청, 재실패 시 PARTIAL 로 마무리 |
+| 상황              | 전략                                                             |
+| ----------------- | ---------------------------------------------------------------- |
+| codex 미인증      | Phase 1에서 즉시 중단, 사용자에게 `codex login` 요청             |
+| storyteller 실패  | 기본 동화 템플릿 (별빛 우정 8장면) 으로 폴백                     |
+| 이미지 일부 누락  | 누락 장면 1회 재시도, 그래도 실패 시 placeholder + 보고서에 명시 |
+| 이미지 전체 실패  | 사용자에게 보고, 텍스트만 있는 뷰어 빌드 여부 확인               |
+| book-builder 실패 | 최소 단일 페이지 fallback HTML 생성                              |
+| qa-reviewer FAIL  | 문제 모듈에게 1회 수정 요청, 재실패 시 PARTIAL 로 마무리         |
 
 ## 테스트 시나리오
 
 ### 정상 흐름
+
 1. 사용자: "동화책 만들어줘 — 별을 좋아하는 토끼 이야기"
 2. Phase 2: storyteller 가 8장면 시나리오, art-director 가 일관된 watercolor 스타일 + 9개 영문 프롬프트 생성
 3. Phase 3: illustrator 가 codex-image 배치로 약 5분 만에 9장 생성
@@ -121,6 +122,7 @@ book/index.html              04_qa_report.md
 5. 사용자가 `book/index.html` 을 열면 표지부터 8장면 + 엔딩까지 페이지 넘김 가능
 
 ### 에러 흐름 (이미지 1장 실패)
+
 1. Phase 3 후 `book/images/scene_05.png` 누락 발견
 2. illustrator 가 scene_05 만 단일 codex exec 재시도
 3. 재시도 성공 → 정상 진행, 또는 실패 → placeholder + 보고서 명시
@@ -130,5 +132,6 @@ book/index.html              04_qa_report.md
 ## description 의 후속 작업 키워드
 
 이 description 은 다음 후속 요청에서도 반드시 트리거되어야 한다:
+
 - "동화 다시 써", "장면 3 수정", "이미지 다시 그려", "스타일 바꿔", "뷰어 색감 변경"
 - "이전 책 개선", "표지만 바꿔", "엔딩 메시지 수정"

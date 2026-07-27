@@ -1,6 +1,6 @@
 ---
 name: library-home
-description: 다중책 라이브러리 홈(루트 index.html) 빌드 스킬. librarian 에이전트 전용. books/library.json 매니페스트를 입력으로 받아 책 카드 그리드를 가진 정적 HTML 홈페이지를 생성한다. 트리거 '라이브러리 홈', '도서관 홈', '책 목록 페이지', '여러 책 보여주는 페이지', 'book index'.
+description: 다중책 라이브러리 홈(루트 index.html) 빌드 스킬. librarian 에이전트 전용. books/library.json 매니페스트를 입력으로 받아 책 카드 그리드를 가진 정적 HTML 홈페이지를 생성한다. 트리거 'need to organize', '라이브러리 홈', '도서관 홈', '책 목록 페이지', '여러 책 보여주는 페이지', 'book index'.
 ---
 
 # Library Home — 도서관 홈 빌더
@@ -15,6 +15,7 @@ librarian 에이전트 전용. 여러 책을 카드 그리드로 보여주는 �
 ## 출력
 
 루트의 3개 파일:
+
 - `index.html` — 라이브러리 홈
 - `library.css` — 홈 전용 스타일
 - `library.js` — 카드 렌더링 + 인터랙션
@@ -32,27 +33,27 @@ librarian 에이전트 전용. 여러 책을 카드 그리드로 보여주는 �
 ```html
 <!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>달빛 도서관</title>
-  <link rel="stylesheet" href="library.css">
-</head>
-<body>
-  <div class="stars-bg" aria-hidden="true"></div>
-  <header class="hero">
-    <h1 id="site-title">달빛 도서관</h1>
-    <p id="tagline">AI가 그린 동화책 모음</p>
-  </header>
-  <main class="shelf">
-    <div id="book-grid" class="book-grid"></div>
-  </main>
-  <footer class="footer">
-    <a id="github-link" href="#">GitHub</a>
-    <span>· AI 자동 제작 동화 라이브러리</span>
-  </footer>
-  <script src="library.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>달빛 도서관</title>
+    <link rel="stylesheet" href="library.css" />
+  </head>
+  <body>
+    <div class="stars-bg" aria-hidden="true"></div>
+    <header class="hero">
+      <h1 id="site-title">달빛 도서관</h1>
+      <p id="tagline">AI가 그린 동화책 모음</p>
+    </header>
+    <main class="shelf">
+      <div id="book-grid" class="book-grid"></div>
+    </main>
+    <footer class="footer">
+      <a id="github-link" href="#">GitHub</a>
+      <span>· AI 자동 제작 동화 라이브러리</span>
+    </footer>
+    <script src="library.js"></script>
+  </body>
 </html>
 ```
 
