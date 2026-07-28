@@ -14,7 +14,7 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 | Phase 2 (스토리+아트디렉션) | 에이전트 팀   | storyteller ↔ art-director 가 캐릭터/장면 합의 필요                 |
 | Phase 3 (이미지 생성)       | 서브 에이전트 | illustrator 단일이 이미지 배치를 실행, 팀 통신 오버헤드 불필요      |
 | Phase 4 (뷰어 빌드 + QA)    | 에이전트 팀   | book-builder ↔ qa-reviewer 가 즉시 피드백 교환                      |
-| Phase 5 (라이브러리 갱신)   | 서브 에이전트 | librarian 이 books/library.json 및 index.html 업데이트              |
+| Phase 5 (라이브러리 갱신)   | 서브 에이전트 | librarian 단일이 library.json 및 홈 페이지 리빌드                   |
 
 ## 에이전트 구성
 
@@ -48,13 +48,11 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 **실행 모드:** 에이전트 팀
 
-1. `TeamCreate(team_name: "fairy-tale-creative", members: [storyteller, art-director])`
-   - 두 에이전트 모두 `model: "opus"`
-2. `TaskCreate`:
-   - task A: storyteller — 시나리오 작성 (assignee: storyteller)
-   - task B: art-director — 프롬프트 작성, depends_on: [task A]
-3. 팀원들이 SendMessage 로 캐릭터 모호점을 협의
-4. 완료 후 `TeamDelete`
+1. Lead: "Spawn storyteller and art-director teammates (both Opus). Storyteller writes the 8-scene scenario, art-director creates visual style guide + English prompts. They coordinate via SendMessage to align character details."
+   - storyteller → `_workspace/01_storyteller_scenario.json` 출력
+   - art-director → `_workspace/02_art_director_prompts.json` 출력
+2. Teammates collaborate and self-coordinate through messaging
+3. Lead synthesizes final outputs when both complete
 
 ### Phase 3: 이미지 생성 (서브)
 
@@ -69,16 +67,15 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 **실행 모드:** 에이전트 팀
 
-1. `TeamCreate(team_name: "fairy-tale-build", members: [book-builder, qa-reviewer])`
-2. `TaskCreate`:
-   - task C: book-builder — 뷰어 빌드 (assignee: book-builder)
-   - task D: qa-reviewer — 통합 검증, depends_on: [task C]
-3. book-builder 완료 → qa-reviewer 가 검증 → 문제 발견 시 SendMessage 로 book-builder 에게 수정 요청
-4. PASS 시 팀 정리
+1. Lead: "Spawn book-builder and qa-reviewer teammates. Book-builder builds the HTML viewer from scenario + images. QA-reviewer validates after build completes. They coordinate via SendMessage—if QA finds issues, it requests fixes from book-builder."
+   - book-builder → `book/index.html + style.css + book.js + book.json` 출력
+   - qa-reviewer → `_workspace/04_qa_report.md` 검증 보고서
+2. Teammates iterate through messaging until PASS
+3. Lead receives completion notification
 
-### Phase 5: 마무리 + 라이브러리 갱신 (에이전트 팀)
+### Phase 5: 마무리 + 라이브러리 갱신 (서브)
 
-**실행 모드:** 에이전트 팀
+**실행 모드:** 서브 에이전트
 
 1. `Agent(name: librarian, subagent_type: librarian, prompt: "books/library.json 을 업데이트하고 루트 index.html 을 갱신")`
    - 백그라운드 실행, 새 책을 books/library.json 에 추가 및 library home 리빌드
@@ -114,7 +111,6 @@ books/library.json + 루트 index.html
 
 | 상황              | 전략                                                             |
 | ----------------- | ---------------------------------------------------------------- |
-| codex 미인증      | Phase 1에서 즉시 중단, 사용자에게 `codex login` 요청             |
 | storyteller 실패  | 기본 동화 템플릿 (별빛 우정 8장면) 으로 폴백                     |
 | 이미지 일부 누락  | 누락 장면 1회 재시도, 그래도 실패 시 placeholder + 보고서에 명시 |
 | 이미지 전체 실패  | 사용자에게 보고, 텍스트만 있는 뷰어 빌드 여부 확인               |
