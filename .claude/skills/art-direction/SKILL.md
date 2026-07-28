@@ -1,11 +1,11 @@
 ---
 name: art-direction
-description: 동화 일러스트 비주얼 스타일 가이드 + 장면별 영문 프롬프트 작성 스킬. art-director 에이전트 전용. 시나리오 JSON 을 입력받아 codex-image (gpt-image) 가 잘 이해하는 영문 프롬프트로 변환한다. 트리거 '이미지 프롬프트 작성', '아트 디렉션', '비주얼 스타일 가이드', '동화 일러스트 프롬프트'.
+description: 동화 일러스트 비주얼 스타일 가이드 + 장면별 영문 프롬프트 작성 스킬. art-director 에이전트 전용. 시나리오 JSON 을 입력받아 Cloudflare Workers AI 가 잘 이해하는 영문 프롬프트로 변환한다. 트리거 '이미지 프롬프트 작성', '아트 디렉션', '비주얼 스타일 가이드', '동화 일러스트 프롬프트'.
 ---
 
 # Art Direction — 그림책 비주얼 가이드 & 프롬프트 작성
 
-art-director 에이전트가 사용. 시나리오를 codex-image 가 일관되게 그릴 수 있는 영문 프롬프트로 번역한다.
+art-director 에이전트가 사용. 시나리오를 Cloudflare Workers AI 가 일관되게 그릴 수 있는 영문 프롬프트로 번역한다.
 
 ## 핵심 원칙
 
@@ -83,7 +83,7 @@ style_suffix: "cute hand-drawn doodle illustration, colored pencil and marker te
 - 19: 갈색 rowboat (돛 사라짐) ❌
 - 20: 작은 노 보트 ❌
 
-이유: "small red-striped sailboat" 만 공유 묘사, 디테일이 프롬프트마다 달라서 codex 가 자율적으로 다른 배를 생성. 해결: object_signatures 에 "두두의 배" 고정 후 18~20 재생성.
+이유: "small red-striped sailboat" 만 공유 묘사, 디테일이 프롬프트마다 달라서 Cloudflare Workers AI 가 자율적으로 다른 배를 생성. 해결: object_signatures 에 "두두의 배" 고정 후 18~20 재생성.
 
 ## 프롬프트 작성 템플릿
 

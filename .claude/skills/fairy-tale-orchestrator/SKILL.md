@@ -42,7 +42,6 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 1. 사용자 입력에서 주제, 장면 수, 타깃 연령 파싱 (없으면 기본값)
 2. 디렉토리 보장: `_workspace/`, `book/images/`
-3. codex 인증 사전 확인 (`codex login status` → "Logged in using ChatGPT")
 
 ### Phase 2: 스토리 + 아트디렉션 (팀)
 
@@ -58,7 +57,7 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 **실행 모드:** 서브 에이전트
 
-1. `Agent(name: illustrator, subagent_type: illustrator, model: opus, prompt: "_workspace/02_art_director_prompts.json 을 읽고 codex-image 배치로 9장 생성")`
+1. `Agent(name: illustrator, subagent_type: illustrator, model: opus, prompt: "_workspace/02_art_director_prompts.json 을 읽고 Cloudflare Workers AI 배치로 9장 생성")`
    - **서브 에이전트의 빌트인 타입은 `general-purpose`** (커스텀 타입 illustrator 가 빌트인이 아니라면 `subagent_type: "general-purpose"` 로 호출하고 prompt 에 illustrator.md 의 역할을 요약 전달, 또는 .claude/agents/illustrator.md 파일을 그대로 참조하도록 지시)
    - 백그라운드 실행, 약 5~6분 소요
 2. 완료 후 `book/images/` 의 PNG 9장 존재 확인
