@@ -41,12 +41,13 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 1. 사용자 입력에서 주제, 장면 수, 타깃 연령 파싱 (없으면 기본값)
 2. 디렉토리 보장: `_workspace/`, `book/images/`
+3. 파싱된 주제/연령대를 Phase 2 prompt 에 전달
 
 ### Phase 2: 아트디렉션 (서브)
 
 **실행 모드:** 서브 에이전트
 
-1. `Agent(name: art-director, subagent_type: art-director, model: opus, prompt: "사용자 입력 주제/연령대로 8장면 동화 시나리오 작성 후, 일관된 비주얼 스타일 + 9개 영문 프롬프트 생성")`
+1. `Agent(name: art-director, subagent_type: art-director, model: opus, prompt: "[주제: {theme}] [연령대: {age}] 동화 시나리오 8장면 작성 후, 일관된 비주얼 스타일 + 9개 영문 프롬프트 생성")`
    - 출력: `_workspace/01_storyteller_scenario.json` (시나리오)
    - 출력: `_workspace/02_art_director_prompts.json` (스타일 + 프롬프트)
    - 백그라운드 실행 가능
