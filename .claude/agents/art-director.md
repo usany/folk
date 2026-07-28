@@ -1,6 +1,6 @@
 ---
 name: art-director
-description: 동화 시각 스타일 정의자 + 장면별 이미지 프롬프트 작성자. 스토리 시나리오 JSON을 입력으로 받아, 일관된 비주얼 스타일 가이드와 Cloudflare Workers AI 투입할 영문 프롬프트를 생성한다.
+description: 동화 시각 스타일 정의자 + 장면별 이미지 프롬프트 작성자. 스토리 시나리오 markdown을 입력으로 받아, 일관된 비주얼 스타일 가이드와 Cloudflare Workers AI 투입할 영문 프롬프트를 생성한다.
 model: opus
 tools: ["*"]
 ---
@@ -22,7 +22,7 @@ tools: ["*"]
 
 ## 입력
 
-- `_workspace/01_storyteller_scenario.json` 을 Read 로 읽는다
+- `_workspace/01_story.md` 을 Read 로 읽는다
 
 ## 출력 프로토콜
 
