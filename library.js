@@ -1,126 +1,103 @@
-function createBookCard(book, isFeatured = false) {
-  const coverImg = book.cover || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 400%22%3E%3Crect fill=%22%23666%22 width=%22300%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-size=%2216%22%3EBook Cover%3C/text%3E%3C/svg%3E';
-  const cardClass = isFeatured ? 'featured-book-card' : 'book-card';
-  return `
-    <a class="${cardClass}" href="${book.url}" aria-label="${book.title}">
-      <div class="card-cover" style="background-image: url('${coverImg}')"></div>
-      <div class="card-info">
-        <h2>${book.title}</h2>
-        <p class="card-subtitle">${book.subtitle || ''}</p>
-        <div class="card-meta">
-          <span class="badge">${book.pages}p</span>
-          <span class="badge style">${book.style || 'Style'}</span>
-          ${book.age ? `<span class="badge">${book.age}</span>` : ''}
-        </div>
-      </div>
-    </a>
-  `;
+// Fallback library data in case JSON fetch fails
+const fallbackLibrary = {
+  library: {
+    title: "달빛 도서관",
+    tagline: "AI가 그린 동화책 모음",
+    github: "https://github.com/revfactory/fairy-tale-moonlight-library"
+  },
+  books: []
+};
+
+async function initializeLibrary() {
+  try {
+    const response = await fetch('books/library.json');
+    if (!response.ok) throw new Error('Failed to load library.json');
+    return await response.json();
+  } catch (error) {
+    console.warn('Could not load library.json, using fallback:', error);
+    return fallbackLibrary;
+  }
 }
 
-async function initLibrary() {
-  const gridEl = document.getElementById('book-grid');
-  const featuredGridEl = document.getElementById('featured-grid');
-  const recentGridEl = document.getElementById('recent-grid');
-  const featuredSectionEl = document.getElementById('featured-section');
-  const recentSectionEl = document.getElementById('recent-section');
-  const siteTitleEl = document.getElementById('site-title');
-  const taglineEl = document.getElementById('tagline');
-  const githubLinkEl = document.getElementById('github-link');
-  const libraryStatsEl = document.getElementById('library-stats');
+function createBookCard(book) {
+  const card = document.createElement('a');
+  card.className = 'book-card';
+  card.href = book.url;
+  card.title = book.title;
 
-  let manifest = null;
+  const cover = document.createElement('div');
+  cover.className = 'card-cover';
+  cover.style.backgroundImage = `url('${book.cover}')`;
 
-  try {
-    const res = await fetch('books/library.json');
-    if (!res.ok) throw new Error('Failed to load manifest');
-    manifest = await res.json();
-  } catch (err) {
-    console.error('Failed to load books/library.json:', err);
-    // Fallback manifest with current book
-    manifest = {
-      library: {
-        title: '달빛 도서관',
-        tagline: 'AI가 그린 동화책 모음',
-        github: 'https://github.com/revfactory/fairy-tale-moonlight-library'
-      },
-      books: [
-        {
-          id: '01-komi-firefly',
-          title: '반딧불이 꼬미의 작은 불빛',
-          subtitle: '가장 작은 빛이 가장 큰 용기가 되었어요',
-          url: 'books/01-komi-firefly/',
-          cover: 'books/01-komi-firefly/images/cover.png',
-          pages: 8,
-          style: '수채화',
-          age: '4-7세',
-          theme: '우정·용기',
-          featured: true
-        }
-      ]
-    };
-  }
+  // Add placeholder class and error handling
+  const img = new Image();
+  img.onerror = () => {
+    cover.classList.add('placeholder');
+    cover.textContent = '📖';
+  };
+  img.src = book.cover;
 
-  // Update header
-  if (manifest.library) {
-    if (manifest.library.title) {
-      siteTitleEl.textContent = manifest.library.title;
-      document.title = manifest.library.title;
-    }
-    if (manifest.library.tagline) {
-      taglineEl.textContent = manifest.library.tagline;
-    }
-    if (manifest.library.github) {
-      githubLinkEl.href = manifest.library.github;
-    }
-  }
+  const info = document.createElement('div');
+  info.className = 'card-info';
+
+  const title = document.createElement('h2');
+  title.textContent = book.title;
+
+  const subtitle = document.createElement('p');
+  subtitle.className = 'card-subtitle';
+  subtitle.textContent = book.subtitle;
+
+  const meta = document.createElement('div');
+  meta.className = 'card-meta';
+
+  const pagesBadge = document.createElement('span');
+  pagesBadge.className = 'badge';
+  pagesBadge.textContent = `${book.pages}p`;
+
+  const styleBadge = document.createElement('span');
+  styleBadge.className = 'badge';
+  styleBadge.textContent = book.style;
+
+  meta.appendChild(pagesBadge);
+  meta.appendChild(styleBadge);
+
+  info.appendChild(title);
+  info.appendChild(subtitle);
+  info.appendChild(meta);
+
+  card.appendChild(cover);
+  card.appendChild(info);
+
+  return card;
+}
+
+async function renderLibrary() {
+  const data = await initializeLibrary();
+  const bookGrid = document.getElementById('book-grid');
+  const emptyState = document.getElementById('empty-state');
+
+  // Update page metadata
+  const siteTitle = document.getElementById('site-title');
+  const tagline = document.getElementById('tagline');
+  const githubLink = document.getElementById('github-link');
+
+  if (siteTitle) siteTitle.textContent = data.library.title;
+  if (tagline) tagline.textContent = data.library.tagline;
+  if (githubLink) githubLink.href = data.library.github;
 
   // Render books
-  const books = manifest.books || [];
-
-  if (books.length === 0) {
-    gridEl.innerHTML = `
-      <div class="empty-state">
-        <h2>📚 아직 책이 없어요</h2>
-        <p>첫 번째 동화책을 추가해 주세요!</p>
-      </div>
-    `;
-    return;
+  if (data.books && data.books.length > 0) {
+    bookGrid.innerHTML = '';
+    data.books.forEach(book => {
+      const card = createBookCard(book);
+      bookGrid.appendChild(card);
+    });
+    emptyState.style.display = 'none';
+  } else {
+    bookGrid.innerHTML = '';
+    emptyState.style.display = 'block';
   }
-
-  // Separate featured and recent books
-  const featured = books.filter(b => b.featured).slice(0, 1);
-  const recent = books.slice(0, 3);
-  const all = books;
-
-  // Render featured section
-  if (featured.length > 0) {
-    featuredSectionEl.style.display = 'block';
-    featuredGridEl.innerHTML = featured
-      .map(book => createBookCard(book, true))
-      .join('');
-  }
-
-  // Render recent section
-  if (books.length > 1) {
-    recentSectionEl.style.display = 'block';
-    recentGridEl.innerHTML = recent
-      .map(book => createBookCard(book, false))
-      .join('');
-  }
-
-  // Render all books
-  gridEl.innerHTML = all
-    .map(book => createBookCard(book, false))
-    .join('');
-
-  // Update library stats
-  const totalPages = books.reduce((sum, b) => sum + (b.pages || 0), 0);
-  libraryStatsEl.textContent = `${books.length}권 · 총 ${totalPages}페이지`;
 }
 
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initLibrary);
-} else {
-  initLibrary();
-}
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', renderLibrary);

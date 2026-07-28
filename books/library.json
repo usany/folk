@@ -16,6 +16,18 @@
       "age": "4-7세",
       "theme": "우정·용기",
       "featured": true
+    },
+    {
+      "id": "02-moonlight-guest",
+      "title": "달빛 손님 루나와 토끼 몽이",
+      "subtitle": "웃는 법을 잊은 달 정령 이야기",
+      "url": "books/02-moonlight-guest/",
+      "cover": "books/02-moonlight-guest/images/cover.png",
+      "pages": 8,
+      "style": "수채화",
+      "age": "4-7세",
+      "theme": "우정·친절·달빛",
+      "featured": true
     }
   ]
 }
