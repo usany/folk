@@ -1,6 +1,6 @@
 ---
 name: fairy-tale-orchestrator
-description: "동화책 자동 제작 오케스트레이터. 시나리오 작성부터 이미지 생성, HTML 책 뷰어 빌드, 라이브러리 갱신까지 6명의 에이전트 팀(storyteller, art-director, illustrator, book-builder, qa-reviewer, librarian)을 조율한다. 단편(6~10페이지)과 장편(30+페이지) 모두 지원. doodle/watercolor/Ghibli/flat 스타일 선택 가능. 트리거: 'need book', '동화책 만들어', '동화 만들어줘', '그림책 제작', '두 번째 동화', '새 동화', '동물 동화', '모험 동화', '장편 동화', '챕터 동화', 'doodle 동화', '색연필 동화', '아이용 책 만들기', 'fairy tale book', 'storybook', '동화책 뷰어'. 후속 작업: '동화 다시 써', '이미지 다시 그려', '장면 N 수정', '스토리 보완', '뷰어 디자인 변경', '이전 책 개선', '책 업데이트', '라이브러리 갱신', '도서관 홈 수정' 등 동화 관련 모든 후속 요청도 반드시 이 스킬을 사용."
+description: "동화책 자동 제작 오케스트레이터. 시나리오 작성부터 이미지 생성, HTML 책 뷰어 빌드, 라이브러리 갱신까지 5명의 에이전트 팀(art-director, illustrator, book-builder, qa-reviewer, librarian)을 조율한다. 단편(6~15페이지)과 장편(30+페이지) 모두 지원. doodle/watercolor/Ghibli/flat 스타일 선택 가능. 트리거: 'need book', '동화책 만들어', '동화 만들어줘', '그림책 제작', '두 번째 동화', '새 동화', '동물 동화', '모험 동화', '장편 동화', '챕터 동화', 'doodle 동화', '색연필 동화', '아이용 책 만들기', 'fairy tale book', 'storybook', '동화책 뷰어'. 후속 작업: '동화 다시 써', '이미지 다시 그려', '장면 N 수정', '스토리 보완', '뷰어 디자인 변경', '이전 책 개선', '책 업데이트', '라이브러리 갱신', '도서관 홈 수정' 등 동화 관련 모든 후속 요청도 반드시 이 스킬을 사용."
 ---
 
 # Fairy Tale Orchestrator — 동화책 제작 통합 워크플로우
@@ -47,7 +47,7 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 **실행 모드:** 서브 에이전트
 
-1. `Agent(name: art-director, subagent_type: art-director, model: opus, prompt: "[주제: {theme}] [연령대: {age}] 동화 시나리오 8장면 작성 후, 일관된 비주얼 스타일 + 9개 영문 프롬프트 생성")`
+1. `Agent(name: art-director, subagent_type: art-director, model: opus, prompt: "[주제: {theme}] [연령대: {age}] 동화 시나리오 11장면 작성 후, 일관된 비주얼 스타일 + 12개 영문 프롬프트 생성")`
    - 출력: `_workspace/01_storyteller_scenario.json` (시나리오)
    - 출력: `_workspace/02_art_director_prompts.json` (스타일 + 프롬프트)
    - 백그라운드 실행 가능
@@ -56,10 +56,10 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 **실행 모드:** 서브 에이전트
 
-1. `Agent(name: illustrator, subagent_type: illustrator, model: opus, prompt: "_workspace/02_art_director_prompts.json 을 읽고 Cloudflare Workers AI 배치로 9장 생성")`
+1. `Agent(name: illustrator, subagent_type: illustrator, model: opus, prompt: "_workspace/02_art_director_prompts.json 을 읽고 Cloudflare Workers AI 배치로 12장 생성")`
    - **서브 에이전트의 빌트인 타입은 `general-purpose`** (커스텀 타입 illustrator 가 빌트인이 아니라면 `subagent_type: "general-purpose"` 로 호출하고 prompt 에 illustrator.md 의 역할을 요약 전달, 또는 .claude/agents/illustrator.md 파일을 그대로 참조하도록 지시)
-   - 백그라운드 실행, 약 5~6분 소요
-2. 완료 후 `book/images/` 의 PNG 9장 존재 확인
+   - 백그라운드 실행
+2. 완료 후 `book/images/` 의 PNG 12장 존재 확인
 
 ### Phase 4: 뷰어 빌드 + QA (팀)
 
