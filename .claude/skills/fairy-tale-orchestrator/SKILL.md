@@ -5,7 +5,7 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 # Fairy Tale Orchestrator — 동화책 제작 통합 워크플로우
 
-5명의 에이전트 팀이 협업하여 시나리오 → 이미지 → 책 뷰어를 완성하는 통합 스킬.
+6명의 에이전트 팀이 협업하여 시나리오 → 이미지 → 책 뷰어 → 라이브러리 갱신을 완성하는 통합 스킬.
 
 ## 실행 모드: 하이브리드
 
@@ -22,9 +22,10 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 | ------------ | ------------ | --------------------------------- | --------------------------------------------------- |
 | storyteller  | storyteller  | 8장면 동화 시나리오 작성          | `_workspace/01_storyteller_scenario.json`           |
 | art-director | art-director | 비주얼 스타일 + 영문 프롬프트 9개 | `_workspace/02_art_director_prompts.json`           |
-| illustrator  | illustrator  | codex-image 로 PNG 9장 생성       | `book/images/cover.png + scene_01~08.png`           |
+| illustrator  | illustrator  | 이미지 PNG 9장 생성               | `book/images/cover.png + scene_01~08.png`           |
 | book-builder | book-builder | HTML 책 뷰어 빌드                 | `book/index.html + style.css + book.js + book.json` |
 | qa-reviewer  | qa-reviewer  | 통합 정합성 검증                  | `_workspace/04_qa_report.md`                        |
+| librarian    | librarian    | 라이브러리 매니페스트 + 홈 갱신   | `books/library.json`, `index.html`                  |
 
 ## 워크플로우
 
@@ -94,7 +95,7 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
     ↓                              ↓
 01_scenario.json              02_prompts.json
                                    ↓
-                          [illustrator (codex-image 병렬)]
+                          [illustrator (이미지 병렬)]
                                    ↓
                           book/images/*.png (9장)
                                    ↓
@@ -102,7 +103,11 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
     ↓                              ↓
 book/index.html              04_qa_report.md
     ↓
-사용자 (브라우저로 열기)
+[librarian] (라이브러리 갱신)
+    ↓
+books/library.json + 루트 index.html
+    ↓
+사용자 (라이브러리 홈 또는 개별 책 열기)
 ```
 
 ## 에러 핸들링
@@ -115,6 +120,7 @@ book/index.html              04_qa_report.md
 | 이미지 전체 실패  | 사용자에게 보고, 텍스트만 있는 뷰어 빌드 여부 확인               |
 | book-builder 실패 | 최소 단일 페이지 fallback HTML 생성                              |
 | qa-reviewer FAIL  | 문제 모듈에게 1회 수정 요청, 재실패 시 PARTIAL 로 마무리         |
+| librarian 실패    | books/library.json 업데이트 생략, 개별 책은 정상 완성으로 보고   |
 
 ## 테스트 시나리오
 
@@ -122,17 +128,19 @@ book/index.html              04_qa_report.md
 
 1. 사용자: "동화책 만들어줘 — 별을 좋아하는 토끼 이야기"
 2. Phase 2: storyteller 가 8장면 시나리오, art-director 가 일관된 watercolor 스타일 + 9개 영문 프롬프트 생성
-3. Phase 3: illustrator 가 codex-image 배치로 약 5분 만에 9장 생성
+3. Phase 3: illustrator 가 이미지 배치로 약 5분 만에 9장 생성
 4. Phase 4: book-builder 가 HTML 뷰어, qa-reviewer 가 PASS
-5. 사용자가 `book/index.html` 을 열면 표지부터 8장면 + 엔딩까지 페이지 넘김 가능
+5. Phase 5: librarian 이 books/library.json 을 업데이트, 루트 index.html (라이브러리 홈) 리빌드
+6. 사용자가 루트 `index.html` 을 열면 라이브러리 홈에서 신규 책 카드 확인, 클릭 시 개별 책 뷰어로 진입
 
 ### 에러 흐름 (이미지 1장 실패)
 
 1. Phase 3 후 `book/images/scene_05.png` 누락 발견
-2. illustrator 가 scene_05 만 단일 codex exec 재시도
+2. illustrator 가 scene_05 만 단일 재시도
 3. 재시도 성공 → 정상 진행, 또는 실패 → placeholder + 보고서 명시
 4. book-builder 가 placeholder 처리하여 뷰어 빌드
 5. qa-reviewer 가 PARTIAL 로 보고
+6. Phase 5: librarian 이 라이브러리 업데이트 (PARTIAL 표시 포함)
 
 ## description 의 후속 작업 키워드
 
