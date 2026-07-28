@@ -48,10 +48,10 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 **실행 모드:** 에이전트 팀
 
-1. Lead: "Spawn storyteller and art-director teammates (both Opus). Storyteller writes the 8-scene scenario, art-director creates visual style guide + English prompts. They coordinate via SendMessage to align character details."
+1. Lead: "Spawn storyteller and art-director teammates (both Opus). Storyteller writes the 8-scene scenario, art-director creates visual style guide + English prompts. They should communicate with each other to align character details and visual consistency."
    - storyteller → `_workspace/01_storyteller_scenario.json` 출력
    - art-director → `_workspace/02_art_director_prompts.json` 출력
-2. Teammates collaborate and self-coordinate through messaging
+2. Teammates automatically coordinate through shared task list and direct messaging
 3. Lead synthesizes final outputs when both complete
 
 ### Phase 3: 이미지 생성 (서브)
@@ -67,10 +67,10 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 **실행 모드:** 에이전트 팀
 
-1. Lead: "Spawn book-builder and qa-reviewer teammates. Book-builder builds the HTML viewer from scenario + images. QA-reviewer validates after build completes. They coordinate via SendMessage—if QA finds issues, it requests fixes from book-builder."
+1. Lead: "Spawn book-builder and qa-reviewer teammates. Book-builder builds the HTML viewer from scenario + images. QA-reviewer validates after build completes. If QA finds issues, it should communicate them to book-builder for fixes."
    - book-builder → `book/index.html + style.css + book.js + book.json` 출력
    - qa-reviewer → `_workspace/04_qa_report.md` 검증 보고서
-2. Teammates iterate through messaging until PASS
+2. Teammates automatically coordinate through shared task list and direct messaging until PASS
 3. Lead receives completion notification
 
 ### Phase 5: 마무리 + 라이브러리 갱신 (서브)
