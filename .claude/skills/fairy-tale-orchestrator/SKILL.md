@@ -5,7 +5,7 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 # Fairy Tale Orchestrator — 동화책 제작 통합 워크플로우
 
-6명의 에이전트 팀이 협업하여 시나리오 → 이미지 → 책 뷰어 → 라이브러리 갱신을 완성하는 통합 스킬.
+5명의 에이전트 팀이 협업하여 시나리오 → 이미지 → 책 뷰어 → 라이브러리 갱신을 완성하는 통합 스킬.
 
 ## 실행 모드: 하이브리드
 
@@ -20,7 +20,7 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 | 팀원         | agent_type   | 역할                                          | 출력                                                |
 | ------------ | ------------ | --------------------------------------------- | --------------------------------------------------- |
-| art-director | art-director | 8장면 시나리오 + 비주얼 스타일 + 영문 프롬프트 | `_workspace/01_storyteller_scenario.json` + `02_art_director_prompts.json` |
+| art-director | art-director | 비주얼 스타일 + 영문 프롬프트 | `_workspace/01_storyteller_scenario.json` + `02_art_director_prompts.json` |
 | illustrator  | illustrator  | 이미지 PNG 9장 생성                          | `book/images/cover.png + scene_01~08.png`           |
 | book-builder | book-builder | HTML 책 뷰어 빌드                            | `book/index.html + style.css + book.js + book.json` |
 | qa-reviewer  | qa-reviewer  | 통합 정합성 검증                              | `_workspace/04_qa_report.md`                        |
