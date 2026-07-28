@@ -12,8 +12,9 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 | Phase                       | 모드          | 이유                                                                |
 | --------------------------- | ------------- | ------------------------------------------------------------------- |
 | Phase 2 (스토리+아트디렉션) | 에이전트 팀   | storyteller ↔ art-director 가 캐릭터/장면 합의 필요                 |
-| Phase 3 (이미지 생성)       | 서브 에이전트 | illustrator 단일이 codex-image 배치를 실행, 팀 통신 오버헤드 불필요 |
+| Phase 3 (이미지 생성)       | 서브 에이전트 | illustrator 단일이 이미지 배치를 실행, 팀 통신 오버헤드 불필요      |
 | Phase 4 (뷰어 빌드 + QA)    | 에이전트 팀   | book-builder ↔ qa-reviewer 가 즉시 피드백 교환                      |
+| Phase 5 (라이브러리 갱신)   | 서브 에이전트 | librarian 이 books/library.json 및 index.html 업데이트              |
 
 ## 에이전트 구성
 
@@ -74,11 +75,15 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 3. book-builder 완료 → qa-reviewer 가 검증 → 문제 발견 시 SendMessage 로 book-builder 에게 수정 요청
 4. PASS 시 팀 정리
 
-### Phase 5: 마무리
+### Phase 5: 마무리 + 라이브러리 갱신 (에이전트 팀)
 
-1. `_workspace/` 보존
-2. 사용자에게 결과 보고: `book/index.html` 경로, 페이지 수, QA 결과
-3. 미리보기 안내: `open /Users/robin/Downloads/fairy-tale/book/index.html` 또는 `python3 -m http.server -d /Users/robin/Downloads/fairy-tale/book 8000` 후 `http://localhost:8000`
+**실행 모드:** 에이전트 팀
+
+1. `Agent(name: librarian, subagent_type: librarian, prompt: "books/library.json 을 업데이트하고 루트 index.html 을 갱신")`
+   - 백그라운드 실행, 새 책을 books/library.json 에 추가 및 library home 리빌드
+   - 완료 후 `_workspace/` 보존
+2. 사용자에게 결과 보고: `book/index.html` 경로, 페이지 수, QA 결과, 라이브러리 업데이트 완료
+3. 미리보기 안내: 루트 `index.html` (라이브러리 홈) 또는 개별 책 경로
 
 ## 데이터 흐름
 
