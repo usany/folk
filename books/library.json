@@ -1,33 +1,15 @@
 {
-  "library": {
-    "title": "달빛 도서관",
-    "tagline": "AI가 그린 동화책 모음",
-    "github": "https://github.com/revfactory/fairy-tale-moonlight-library"
-  },
+  "title": "달빛 도서관",
+  "subtitle": "AI가 그린 동화책 모음",
   "books": [
     {
-      "id": "01-komi-firefly",
-      "title": "반딧불이 꼬미의 작은 불빛",
-      "subtitle": "가장 작은 빛이 가장 큰 용기가 되었어요",
-      "url": "books/01-komi-firefly/",
-      "cover": "books/01-komi-firefly/images/cover.png",
-      "pages": 8,
-      "style": "수채화",
-      "age": "4-7세",
-      "theme": "우정·용기",
-      "featured": true
-    },
-    {
-      "id": "02-moonlight-guest",
-      "title": "달빛 손님 루나와 토끼 몽이",
-      "subtitle": "웃는 법을 잊은 달 정령 이야기",
-      "url": "books/02-moonlight-guest/",
-      "cover": "books/02-moonlight-guest/images/cover.png",
-      "pages": 8,
-      "style": "수채화",
-      "age": "4-7세",
-      "theme": "우정·친절·달빛",
-      "featured": true
+      "id": "01-rabbit-tale",
+      "title": "토끼가 들려주는 토끼와 거북이",
+      "subtitle": "우리가 몰랐던 토끼와 거북이 이야기의 숨겨진 진실",
+      "url": "./books/01-rabbit-tale/index.html",
+      "cover": "./books/01-rabbit-tale/images/cover.png",
+      "pages": 12,
+      "style": "dark satire"
     }
   ]
 }

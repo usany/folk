@@ -1,103 +1,77 @@
-// Fallback library data in case JSON fetch fails
-const fallbackLibrary = {
-  library: {
-    title: "달빛 도서관",
-    tagline: "AI가 그린 동화책 모음",
-    github: "https://github.com/revfactory/fairy-tale-moonlight-library"
-  },
-  books: []
+const FALLBACK_MANIFEST = {
+  title: "달빛 도서관",
+  subtitle: "AI가 그린 동화책 모음",
+  books: [
+    {
+      id: "01-rabbit-tale",
+      title: "토끼가 들려주는 토끼와 거북이",
+      subtitle: "우리가 몰랐던 토끼와 거북이 이야기의 숨겨진 진실",
+      url: "./books/01-rabbit-tale/index.html",
+      cover: "./books/01-rabbit-tale/images/cover.png",
+      pages: 12,
+      style: "dark satire"
+    }
+  ]
 };
 
-async function initializeLibrary() {
+async function loadLibrary() {
   try {
-    const response = await fetch('books/library.json');
-    if (!response.ok) throw new Error('Failed to load library.json');
+    const response = await fetch("./books/library.json");
+    if (!response.ok) throw new Error("Failed to load manifest");
     return await response.json();
   } catch (error) {
-    console.warn('Could not load library.json, using fallback:', error);
-    return fallbackLibrary;
+    console.warn("Using fallback manifest:", error);
+    return FALLBACK_MANIFEST;
   }
+}
+
+function renderBooks(manifest) {
+  const grid = document.getElementById("book-grid");
+
+  if (!manifest.books || manifest.books.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column: 1/-1;">
+        <h2>아직 책이 없습니다</h2>
+        <p>동화책을 추가하면 여기에 표시됩니다.</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = manifest.books
+    .map(book => createBookCard(book))
+    .join("");
 }
 
 function createBookCard(book) {
-  const card = document.createElement('a');
-  card.className = 'book-card';
-  card.href = book.url;
-  card.title = book.title;
+  const coverUrl = book.cover || "./placeholder.png";
+  const pageCount = book.pages ? `${book.pages}p` : "📖";
+  const style = book.style ? `<span class="badge">${escapeHtml(book.style)}</span>` : "";
 
-  const cover = document.createElement('div');
-  cover.className = 'card-cover';
-  cover.style.backgroundImage = `url('${book.cover}')`;
-
-  // Add placeholder class and error handling
-  const img = new Image();
-  img.onerror = () => {
-    cover.classList.add('placeholder');
-    cover.textContent = '📖';
-  };
-  img.src = book.cover;
-
-  const info = document.createElement('div');
-  info.className = 'card-info';
-
-  const title = document.createElement('h2');
-  title.textContent = book.title;
-
-  const subtitle = document.createElement('p');
-  subtitle.className = 'card-subtitle';
-  subtitle.textContent = book.subtitle;
-
-  const meta = document.createElement('div');
-  meta.className = 'card-meta';
-
-  const pagesBadge = document.createElement('span');
-  pagesBadge.className = 'badge';
-  pagesBadge.textContent = `${book.pages}p`;
-
-  const styleBadge = document.createElement('span');
-  styleBadge.className = 'badge';
-  styleBadge.textContent = book.style;
-
-  meta.appendChild(pagesBadge);
-  meta.appendChild(styleBadge);
-
-  info.appendChild(title);
-  info.appendChild(subtitle);
-  info.appendChild(meta);
-
-  card.appendChild(cover);
-  card.appendChild(info);
-
-  return card;
+  return `
+    <a class="book-card" href="${escapeHtml(book.url)}" tabindex="0">
+      <div class="card-cover" style="background-image:url('${escapeHtml(coverUrl)}')"></div>
+      <div class="card-info">
+        <h2>${escapeHtml(book.title)}</h2>
+        <p class="card-subtitle">${escapeHtml(book.subtitle || "")}</p>
+        <div class="card-meta">
+          <span class="badge">${pageCount}</span>
+          ${style}
+        </div>
+      </div>
+    </a>
+  `;
 }
 
-async function renderLibrary() {
-  const data = await initializeLibrary();
-  const bookGrid = document.getElementById('book-grid');
-  const emptyState = document.getElementById('empty-state');
-
-  // Update page metadata
-  const siteTitle = document.getElementById('site-title');
-  const tagline = document.getElementById('tagline');
-  const githubLink = document.getElementById('github-link');
-
-  if (siteTitle) siteTitle.textContent = data.library.title;
-  if (tagline) tagline.textContent = data.library.tagline;
-  if (githubLink) githubLink.href = data.library.github;
-
-  // Render books
-  if (data.books && data.books.length > 0) {
-    bookGrid.innerHTML = '';
-    data.books.forEach(book => {
-      const card = createBookCard(book);
-      bookGrid.appendChild(card);
-    });
-    emptyState.style.display = 'none';
-  } else {
-    bookGrid.innerHTML = '';
-    emptyState.style.display = 'block';
-  }
+function escapeHtml(text) {
+  if (!text) return "";
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
 }
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', renderLibrary);
+// Initialize on load
+document.addEventListener("DOMContentLoaded", async () => {
+  const manifest = await loadLibrary();
+  renderBooks(manifest);
+});
