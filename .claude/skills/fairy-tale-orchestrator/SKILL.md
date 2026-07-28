@@ -9,23 +9,22 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 ## 실행 모드: 하이브리드
 
-| Phase                       | 모드          | 이유                                                                |
-| --------------------------- | ------------- | ------------------------------------------------------------------- |
-| Phase 2 (스토리+아트디렉션) | 에이전트 팀   | storyteller ↔ art-director 가 캐릭터/장면 합의 필요                 |
-| Phase 3 (이미지 생성)       | 서브 에이전트 | illustrator 단일이 이미지 배치를 실행, 팀 통신 오버헤드 불필요      |
-| Phase 4 (뷰어 빌드 + QA)    | 에이전트 팀   | book-builder ↔ qa-reviewer 가 즉시 피드백 교환                      |
-| Phase 5 (라이브러리 갱신)   | 서브 에이전트 | librarian 단일이 library.json 및 홈 페이지 리빌드                   |
+| Phase                    | 모드          | 이유                                                                |
+| ------------------------ | ------------- | ------------------------------------------------------------------- |
+| Phase 2 (아트디렉션)     | 서브 에이전트 | art-director 단일이 시나리오 + 스타일 + 프롬프트 생성               |
+| Phase 3 (이미지 생성)    | 서브 에이전트 | illustrator 단일이 이미지 배치를 실행, 팀 통신 오버헤드 불필요      |
+| Phase 4 (뷰어 빌드 + QA) | 에이전트 팀   | book-builder ↔ qa-reviewer 가 즉시 피드백 교환                      |
+| Phase 5 (라이브러리 갱신)| 서브 에이전트 | librarian 단일이 library.json 및 홈 페이지 리빌드                   |
 
 ## 에이전트 구성
 
-| 팀원         | agent_type   | 역할                              | 출력                                                |
-| ------------ | ------------ | --------------------------------- | --------------------------------------------------- |
-| storyteller  | storyteller  | 8장면 동화 시나리오 작성          | `_workspace/01_storyteller_scenario.json`           |
-| art-director | art-director | 비주얼 스타일 + 영문 프롬프트 9개 | `_workspace/02_art_director_prompts.json`           |
-| illustrator  | illustrator  | 이미지 PNG 9장 생성               | `book/images/cover.png + scene_01~08.png`           |
-| book-builder | book-builder | HTML 책 뷰어 빌드                 | `book/index.html + style.css + book.js + book.json` |
-| qa-reviewer  | qa-reviewer  | 통합 정합성 검증                  | `_workspace/04_qa_report.md`                        |
-| librarian    | librarian    | 라이브러리 매니페스트 + 홈 갱신   | `books/library.json`, `index.html`                  |
+| 팀원         | agent_type   | 역할                                          | 출력                                                |
+| ------------ | ------------ | --------------------------------------------- | --------------------------------------------------- |
+| art-director | art-director | 8장면 시나리오 + 비주얼 스타일 + 영문 프롬프트 | `_workspace/01_storyteller_scenario.json` + `02_art_director_prompts.json` |
+| illustrator  | illustrator  | 이미지 PNG 9장 생성                          | `book/images/cover.png + scene_01~08.png`           |
+| book-builder | book-builder | HTML 책 뷰어 빌드                            | `book/index.html + style.css + book.js + book.json` |
+| qa-reviewer  | qa-reviewer  | 통합 정합성 검증                              | `_workspace/04_qa_report.md`                        |
+| librarian    | librarian    | 라이브러리 매니페스트 + 홈 갱신               | `books/library.json`, `index.html`                  |
 
 ## 워크플로우
 
@@ -43,15 +42,14 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 1. 사용자 입력에서 주제, 장면 수, 타깃 연령 파싱 (없으면 기본값)
 2. 디렉토리 보장: `_workspace/`, `book/images/`
 
-### Phase 2: 스토리 + 아트디렉션 (팀)
+### Phase 2: 아트디렉션 (서브)
 
-**실행 모드:** 에이전트 팀
+**실행 모드:** 서브 에이전트
 
-1. Lead: "Spawn storyteller and art-director teammates (both Opus). Storyteller writes the 8-scene scenario, art-director creates visual style guide + English prompts. They should communicate with each other to align character details and visual consistency."
-   - storyteller → `_workspace/01_storyteller_scenario.json` 출력
-   - art-director → `_workspace/02_art_director_prompts.json` 출력
-2. Teammates automatically coordinate through shared task list and direct messaging
-3. Lead synthesizes final outputs when both complete
+1. `Agent(name: art-director, subagent_type: art-director, model: opus, prompt: "사용자 입력 주제/연령대로 8장면 동화 시나리오 작성 후, 일관된 비주얼 스타일 + 9개 영문 프롬프트 생성")`
+   - 출력: `_workspace/01_storyteller_scenario.json` (시나리오)
+   - 출력: `_workspace/02_art_director_prompts.json` (스타일 + 프롬프트)
+   - 백그라운드 실행 가능
 
 ### Phase 3: 이미지 생성 (서브)
 
@@ -87,17 +85,17 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 ```
 사용자 입력
     ↓
-[storyteller] ─SendMessage→ [art-director]
-    ↓                              ↓
-01_scenario.json              02_prompts.json
-                                   ↓
-                          [illustrator (이미지 병렬)]
-                                   ↓
-                          book/images/*.png (9장)
-                                   ↓
-[book-builder] ←SendMessage→ [qa-reviewer]
-    ↓                              ↓
-book/index.html              04_qa_report.md
+[art-director]
+    ↓
+01_scenario.json + 02_prompts.json
+    ↓
+[illustrator (이미지 병렬)]
+    ↓
+book/images/*.png (9장)
+    ↓
+[book-builder] ↔ [qa-reviewer]
+    ↓                    ↓
+book/index.html    04_qa_report.md
     ↓
 [librarian] (라이브러리 갱신)
     ↓
@@ -122,7 +120,7 @@ books/library.json + 루트 index.html
 ### 정상 흐름
 
 1. 사용자: "동화책 만들어줘 — 별을 좋아하는 토끼 이야기"
-2. Phase 2: storyteller 가 8장면 시나리오, art-director 가 일관된 watercolor 스타일 + 9개 영문 프롬프트 생성
+2. Phase 2: art-director 가 8장면 시나리오 + 일관된 watercolor 스타일 + 9개 영문 프롬프트 생성
 3. Phase 3: illustrator 가 이미지 배치로 약 5분 만에 9장 생성
 4. Phase 4: book-builder 가 HTML 뷰어, qa-reviewer 가 PASS
 5. Phase 5: librarian 이 books/library.json 을 업데이트, 루트 index.html (라이브러리 홈) 리빌드
