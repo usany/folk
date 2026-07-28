@@ -21,7 +21,7 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 | 팀원         | agent_type   | 역할                                          | 출력                                                |
 | ------------ | ------------ | --------------------------------------------- | --------------------------------------------------- |
 | art-director | art-director | 비주얼 스타일 + 영문 프롬프트 | `_workspace/01_storyteller_scenario.json` + `02_art_director_prompts.json` |
-| illustrator  | illustrator  | 이미지 PNG 9장 생성                          | `book/images/cover.png + scene_01~08.png`           |
+| illustrator  | illustrator  | 이미지 PNG 12장 생성                          | `book/images/cover.png + scene_01~11.png`           |
 | book-builder | book-builder | HTML 책 뷰어 빌드                            | `book/index.html + style.css + book.js + book.json` |
 | qa-reviewer  | qa-reviewer  | 통합 정합성 검증                              | `_workspace/04_qa_report.md`                        |
 | librarian    | librarian    | 라이브러리 매니페스트 + 홈 갱신               | `books/library.json`, `index.html`                  |
@@ -39,9 +39,7 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 ### Phase 1: 준비
 
-1. 사용자 입력에서 주제, 장면 수, 타깃 연령 파싱 (없으면 기본값)
-2. 디렉토리 보장: `_workspace/`, `book/images/`
-3. 파싱된 주제/연령대를 Phase 2 prompt 에 전달
+1. 디렉토리 보장: `_workspace/`, `book/images/`
 
 ### Phase 2: 아트디렉션 (서브)
 
