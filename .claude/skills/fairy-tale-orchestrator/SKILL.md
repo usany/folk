@@ -28,7 +28,7 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
 
 ## 워크플로우
 
-### Phase 0: 컨텍스트 확인
+### Phase 1: 컨텍스트 확인
 
 1. `_workspace/` 존재 여부 확인
 2. `book/index.html` 존재 여부 확인
@@ -36,10 +36,7 @@ description: "동화책 자동 제작 오케스트레이터. 시나리오 작성
    - 둘 다 없음 → **초기 실행**, Phase 1 진행
    - 둘 다 존재 + 사용자가 부분 수정 요청 → **부분 재실행** (해당 에이전트만 호출)
    - 둘 다 존재 + 새 주제 입력 → **새 실행**, 기존 `_workspace/` 와 `book/` 를 각각 `_workspace_{timestamp}/`, `book_{timestamp}/` 로 보관 후 새로 생성
-
-### Phase 1: 준비
-
-1. 디렉토리 보장: `_workspace/`, `book/images/`
+4. 디렉토리 보장: `_workspace/`, `book/images/`
 
 ### Phase 2: 아트디렉션 (서브)
 
