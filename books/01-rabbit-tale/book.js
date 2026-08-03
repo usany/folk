@@ -240,7 +240,7 @@ function render() {
         };
 
         audio.onended = () => {
-          playBtn.textContent = '🔊 읽어주기';
+          playBtn.textContent = '⏸ 중지';
           playBtn.style.visibility = 'hidden';
           if (autoAdvance && currentPage < bookData.pages.length - 1) {
             autoPlayNext = true;
