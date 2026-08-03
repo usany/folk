@@ -103,6 +103,32 @@ body {
   color: rgba(255, 255, 255, 0.8);
   line-height: 1.6;
   text-shadow: 0 2px 8px var(--shadow);
+  margin-bottom: 2rem;
+}
+
+.cover-play-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(212, 55, 46, 0.3);
+  display: inline-block;
+  margin-top: 1.5rem;
+}
+
+.cover-play-btn:hover {
+  background: #ff4d45;
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgba(212, 55, 46, 0.5);
+}
+
+.cover-play-btn:active {
+  transform: scale(0.96);
 }
 
 /* Scene pages */

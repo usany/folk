@@ -2,6 +2,7 @@ let currentPage = 0;
 let bookData = null;
 let currentAudio = null;
 let autoAdvance = true;
+let autoPlayNext = false;
 
 // Inline fallback data if fetch fails
 const fallbackData = {
@@ -84,8 +85,27 @@ function render() {
       <div class="cover-content">
         <h1>${page.title}</h1>
         <p class="subtitle">${page.subtitle}</p>
+        <button class="cover-play-btn" id="coverPlayBtn">🎧 이야기 듣기</button>
       </div>
     `;
+
+    setTimeout(() => {
+      const coverPlayBtn = document.getElementById('coverPlayBtn');
+      if (coverPlayBtn) {
+        coverPlayBtn.onclick = () => {
+          // Find first scene and start playing
+          const firstSceneIndex = bookData.pages.findIndex(p => p.type === 'scene');
+          if (firstSceneIndex !== -1) {
+            currentPage = firstSceneIndex;
+            render();
+            setTimeout(() => {
+              const playBtn = document.getElementById('playBtn');
+              if (playBtn) playBtn.click();
+            }, 100);
+          }
+        };
+      }
+    }, 0);
   } else if (page.type === 'scene') {
     const audioFile = `audio/page_${String(page.number).padStart(2, '0')}.mp3`;
 
@@ -183,6 +203,7 @@ function render() {
             });
           }
           if (autoAdvance && currentPage < bookData.pages.length - 1) {
+            autoPlayNext = true;
             setTimeout(() => nextPage(), 1000);
           }
         };
@@ -193,6 +214,16 @@ function render() {
           playBtn.disabled = true;
           playBtn.style.opacity = '0.5';
         };
+
+        // Auto-play if we came from the previous page's audio ending
+        if (autoPlayNext) {
+          setTimeout(() => {
+            audio.play().catch(() => {
+              autoPlayNext = false;
+            });
+            autoPlayNext = false;
+          }, 100);
+        }
       }
     }, 0);
   } else if (page.type === 'ending') {
