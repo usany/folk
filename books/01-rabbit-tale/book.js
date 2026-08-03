@@ -241,9 +241,20 @@ function render() {
 
         audio.onended = () => {
           playBtn.textContent = '🔊 읽어주기';
-          if (autoAdvance && currentPage < bookData.pages.length - 1) {
-            autoPlayNext = true;
-            setTimeout(() => nextPage(), 1000);
+          // Add a re-read button when audio finishes
+          const audioControls = document.querySelector('.audio-controls');
+          if (audioControls && !audioControls.querySelector('.reread-btn')) {
+            const rereadBtn = document.createElement('button');
+            rereadBtn.className = 'reread-btn';
+            rereadBtn.textContent = '🔁 다시 읽기';
+            rereadBtn.onclick = () => {
+              audio.currentTime = 0;
+              audio.play().catch(err => {
+                console.error('Failed to replay:', err);
+              });
+              rereadBtn.remove();
+            };
+            audioControls.appendChild(rereadBtn);
           }
         };
 
