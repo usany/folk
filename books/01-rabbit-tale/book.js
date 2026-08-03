@@ -165,6 +165,7 @@ function render() {
       return word;
     }).join('');
 
+    const buttonStyle = autoPlayNext ? ' style="visibility: hidden;"' : '';
     pageEl.innerHTML = `
       <div class="scene-image">
         <img src="${page.image}" alt="${page.title}" loading="lazy">
@@ -172,7 +173,7 @@ function render() {
       <div class="scene-text">
         <h2 class="scene-title">${page.title}</h2>
         <div class="audio-controls">
-          <button class="play-button" id="playBtn" aria-label="재생">🔊 읽어주기</button>
+          <button class="play-button" id="playBtn" aria-label="재생"${buttonStyle}>🔊 읽어주기</button>
           <span class="audio-status" id="audioStatus"></span>
         </div>
         <p class="scene-body" id="sceneBody">${highlightedBody}</p>
@@ -262,11 +263,13 @@ function render() {
         // Auto-play if we came from the previous page's audio ending
         if (autoPlayNext) {
           setTimeout(() => {
-            // Set button text before playing to avoid flicker
+            // Show button and set correct state before playing
+            playBtn.style.visibility = 'visible';
             playBtn.textContent = '⏸ 중지';
             skipButtonUpdateOnPlay = true;
             audio.play().catch(() => {
               autoPlayNext = false;
+              playBtn.style.visibility = 'hidden';
               playBtn.textContent = '🔊 읽어주기';
               skipButtonUpdateOnPlay = false;
             });
