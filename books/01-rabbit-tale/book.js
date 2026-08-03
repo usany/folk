@@ -1,5 +1,6 @@
 let currentPage = 0;
 let bookData = null;
+let currentAudio = null;
 
 // Inline fallback data if fetch fails
 const fallbackData = {
@@ -24,6 +25,17 @@ const fallbackData = {
     {"type":"ending","number":12,"title":"끝","message":"네가 알고 있는 그 이야기 진실이니?","image":"images/scene_11.png"}
   ]
 };
+
+function toggleAudio(audio, button, status) {
+  if (audio.paused) {
+    audio.play().catch(err => {
+      status.textContent = '(재생 실패)';
+      status.style.color = '#e74c3c';
+    });
+  } else {
+    audio.pause();
+  }
+}
 
 async function loadBook() {
   try {
@@ -54,16 +66,51 @@ function render() {
       </div>
     `;
   } else if (page.type === 'scene') {
+    const audioFile = `audio/page_${String(page.number).padStart(2, '0')}.mp3`;
     pageEl.innerHTML = `
       <div class="scene-image">
         <img src="${page.image}" alt="${page.title}" loading="lazy">
       </div>
       <div class="scene-text">
         <h2 class="scene-title">${page.title}</h2>
+        <div class="audio-controls">
+          <button class="play-button" id="playBtn" aria-label="재생">🔊 읽어주기</button>
+          <span class="audio-status" id="audioStatus"></span>
+        </div>
         <p class="scene-body">${page.body}</p>
         <div class="scene-emotion">${page.emotion}</div>
       </div>
+      <audio id="sceneAudio" src="${audioFile}"></audio>
     `;
+
+    setTimeout(() => {
+      const playBtn = document.getElementById('playBtn');
+      const audio = document.getElementById('sceneAudio');
+      const status = document.getElementById('audioStatus');
+
+      if (playBtn && audio) {
+        playBtn.addEventListener('click', () => toggleAudio(audio, playBtn, status));
+        audio.addEventListener('play', () => {
+          playBtn.textContent = '⏸ 중지';
+          if (currentAudio && currentAudio !== audio) {
+            currentAudio.pause();
+          }
+          currentAudio = audio;
+        });
+        audio.addEventListener('pause', () => {
+          playBtn.textContent = '🔊 읽어주기';
+        });
+        audio.addEventListener('ended', () => {
+          playBtn.textContent = '🔊 읽어주기';
+        });
+        audio.addEventListener('error', () => {
+          status.textContent = '(오디오 파일 없음)';
+          status.style.color = '#999';
+          playBtn.disabled = true;
+          playBtn.style.opacity = '0.5';
+        });
+      }
+    }, 0);
   } else if (page.type === 'ending') {
     pageEl.innerHTML = `
       <div class="ending-content">
