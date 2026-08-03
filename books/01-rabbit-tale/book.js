@@ -110,12 +110,20 @@ function render() {
             coverPlayBtn.disabled = false;
           };
 
-          // Advance to first scene when audio ends
+          // Chain to first scene audio when cover speech ends
           coverAudio.onended = () => {
             const firstSceneIndex = bookData.pages.findIndex(p => p.type === 'scene');
             if (firstSceneIndex !== -1) {
               currentPage = firstSceneIndex;
               render();
+
+              // Wait for page to render, then auto-play first scene audio
+              setTimeout(() => {
+                const playBtn = document.getElementById('playBtn');
+                if (playBtn) {
+                  playBtn.click();
+                }
+              }, 100);
             }
           };
 
