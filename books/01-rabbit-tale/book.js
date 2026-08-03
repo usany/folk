@@ -85,7 +85,7 @@ function render() {
       <div class="cover-content">
         <h1>${page.title}</h1>
         <p class="subtitle">${page.subtitle}</p>
-        <button class="cover-play-btn" id="coverPlayBtn">🎧 이야기 듣기</button>
+        <button class="cover-play-btn" id="coverPlayBtn">🎧 제목 듣고 시작하기</button>
       </div>
     `;
 
@@ -93,16 +93,54 @@ function render() {
       const coverPlayBtn = document.getElementById('coverPlayBtn');
       if (coverPlayBtn) {
         coverPlayBtn.onclick = () => {
-          // Find first scene and start playing
-          const firstSceneIndex = bookData.pages.findIndex(p => p.type === 'scene');
-          if (firstSceneIndex !== -1) {
-            currentPage = firstSceneIndex;
-            render();
-            setTimeout(() => {
-              const playBtn = document.getElementById('playBtn');
-              if (playBtn) playBtn.click();
-            }, 100);
-          }
+          const coverAudio = setupAudioElement('audio/cover_speech.mp3');
+
+          // Clear any previous listeners
+          coverAudio.onended = null;
+          coverAudio.onerror = null;
+
+          // Update button state during playback
+          coverAudio.onplay = () => {
+            coverPlayBtn.textContent = '⏸ 재생 중...';
+            coverPlayBtn.disabled = true;
+          };
+
+          coverAudio.onpause = () => {
+            coverPlayBtn.textContent = '🎧 제목 듣고 시작하기';
+            coverPlayBtn.disabled = false;
+          };
+
+          // Advance to first scene when audio ends
+          coverAudio.onended = () => {
+            const firstSceneIndex = bookData.pages.findIndex(p => p.type === 'scene');
+            if (firstSceneIndex !== -1) {
+              currentPage = firstSceneIndex;
+              render();
+            }
+          };
+
+          // Error handling
+          coverAudio.onerror = () => {
+            coverPlayBtn.textContent = '🎧 제목 듣고 시작하기';
+            coverPlayBtn.disabled = false;
+            // Still advance to first scene on error
+            const firstSceneIndex = bookData.pages.findIndex(p => p.type === 'scene');
+            if (firstSceneIndex !== -1) {
+              currentPage = firstSceneIndex;
+              render();
+            }
+          };
+
+          // Start playback
+          coverAudio.play().catch(err => {
+            console.error('Failed to play cover speech:', err);
+            // Fallback: advance anyway
+            const firstSceneIndex = bookData.pages.findIndex(p => p.type === 'scene');
+            if (firstSceneIndex !== -1) {
+              currentPage = firstSceneIndex;
+              render();
+            }
+          });
         };
       }
     }, 0);
