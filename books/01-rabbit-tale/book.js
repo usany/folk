@@ -195,13 +195,6 @@ function render() {
 
         audio.onended = () => {
           playBtn.textContent = '🔊 읽어주기';
-          // Clear highlighting
-          const sceneBody = document.getElementById('sceneBody');
-          if (sceneBody) {
-            sceneBody.querySelectorAll('.word.active').forEach(w => {
-              w.classList.remove('active');
-            });
-          }
           if (autoAdvance && currentPage < bookData.pages.length - 1) {
             autoPlayNext = true;
             setTimeout(() => nextPage(), 1000);
