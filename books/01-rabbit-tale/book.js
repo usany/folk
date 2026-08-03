@@ -3,6 +3,7 @@ let bookData = null;
 let currentAudio = null;
 let autoAdvance = true;
 let autoPlayNext = false;
+let skipButtonUpdateOnPlay = false;
 
 // Inline fallback data if fetch fails
 const fallbackData = {
@@ -215,7 +216,10 @@ function render() {
         audio.onerror = null;
 
         audio.onplay = () => {
-          playBtn.textContent = '⏸ 중지';
+          if (!skipButtonUpdateOnPlay) {
+            playBtn.textContent = '⏸ 중지';
+          }
+          skipButtonUpdateOnPlay = false;
           if (currentAudio && currentAudio !== audio) {
             currentAudio.pause();
           }
@@ -258,8 +262,13 @@ function render() {
         // Auto-play if we came from the previous page's audio ending
         if (autoPlayNext) {
           setTimeout(() => {
+            // Set button text before playing to avoid flicker
+            playBtn.textContent = '⏸ 중지';
+            skipButtonUpdateOnPlay = true;
             audio.play().catch(() => {
               autoPlayNext = false;
+              playBtn.textContent = '🔊 읽어주기';
+              skipButtonUpdateOnPlay = false;
             });
             autoPlayNext = false;
           }, 100);
