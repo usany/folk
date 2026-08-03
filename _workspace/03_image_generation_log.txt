@@ -1,0 +1,79 @@
+IMAGE GENERATION LOG
+====================
+Book: 토끼가 들려주는 토끼와 거북이
+Date: 2026-07-29
+Engine: Cloudflare Workers AI - @cf/black-forest-labs/flux-1-schnell (steps=4)
+Prompts: _workspace/02_art_director_prompts.json
+Output: book/images/
+
+RESULT: 12/12 generated (100%)
+All images 1024x1024, valid PNG, >200KB.
+Note: Cloudflare returned JPEG bytes; all normalized to true PNG via sips.
+
+GENERATED
+---------
+cover.png       1024x1024    920,066 bytes   pass 1
+scene_01.png    1024x1024  1,423,169 bytes   pass 1
+scene_02.png    1024x1024  1,921,980 bytes   pass 2 (retry)
+scene_03.png    1024x1024  1,788,396 bytes   pass 2 (retry)
+scene_04.png    1024x1024    691,835 bytes   pass 1
+scene_05.png    1024x1024  1,239,899 bytes   pass 1
+scene_06.png    1024x1024  1,020,092 bytes   pass 1
+scene_07.png    1024x1024  1,138,912 bytes   pass 1
+scene_08.png    1024x1024  1,501,381 bytes   pass 1
+scene_09.png    1024x1024  1,911,478 bytes   pass 3 (reroll for composition)
+scene_10.png    1024x1024  1,624,519 bytes   pass 1
+scene_11.png    1024x1024  1,477,700 bytes   pass 1
+
+FAILURES AND RECOVERY
+---------------------
+scene_02.png / scene_03.png - pass 1 returned HTTP 400
+  "AiError: Invalid input" (code 8001).
+  Transient API-side error, not content filtering and not prompt length
+  (longer prompts in the same batch succeeded). Both succeeded unchanged
+  on immediate retry. No prompt edits were needed.
+
+scene_09.png - pass 2 was generated successfully but composition drifted:
+  rabbit rendered centered and large instead of "tiny and dwarfed in the
+  lower left corner with his back to the viewer". Rerolled once with the
+  identical prompt; pass 3 matches the intended composition and was kept.
+  Pass 2 output retained as backup in the session scratchpad.
+
+OPEN QUALITY ISSUES (for art-director)
+--------------------------------------
+1. HALLUCINATED LETTERING - violates forbidden rule
+   "text, letters, hangul, or watermarks inside the image".
+   - scene_09.png: garbled pseudo-text ("SETSSILER") on every red
+     bestseller band plus faint fake type on the book spines. Persists
+     across two independent generations, so this is prompt-driven, not
+     random. The prompt describes a bookshop bestseller display with
+     cover bands, which reliably pushes Flux into rendering type even
+     with the negative clause present.
+   - scene_03.png: small block of invented CJK-like glyphs top-right,
+     plus a red seal mark bottom-right. Present in both generations.
+   - scene_10.png also depicts an open book and carries the same risk.
+   Suggested fix if a rewrite is wanted: drop the words "book",
+   "memoir", "bestseller band", "cover" and describe the object purely
+   by physical form (e.g. "a stacked wall of dark indigo cloth-bound
+   rectangular slabs, each bearing a painted oval portrait medallion,
+   each wrapped with a plain blank crimson paper strip"), and avoid the
+   word "no text" in the negative tail, which can act as an attractor.
+
+2. STYLE CONSISTENCY - acceptable but not uniform
+   Characters are consistent (frail white rabbit, hulking cracked-shell
+   tortoise, single crimson accent respected in nearly every frame).
+   Rendering technique varies: cover.png reads as pen-and-ink on white
+   with a hand-drawn border, while most scenes read as flat painted
+   comic/woodblock with sepia or indigo grounds. Not blocking, but the
+   cover sits slightly apart from the interior.
+
+3. MINOR - cover.png places the crimson scarf on the tortoise as well as
+   the rabbit, so two red elements appear instead of the specified one
+   (spec called for the rabbit's scarf only).
+
+NEXT
+----
+Images are complete and usable. book-builder can proceed against
+book/images/ with the naming above. Items under OPEN QUALITY ISSUES
+need an art-director prompt rewrite plus regeneration if the team wants
+them resolved before QA sign-off.

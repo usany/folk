@@ -1,0 +1,161 @@
+{
+  "book_title": "토끼가 들려주는 토끼와 거북이",
+  "tone": "dark satire, unreliable-narrator testimony, injustice and manufactured truth",
+  "style_guide": {
+    "art_style": "Korean ink wash painting (sumukhwa) on textured hanji paper, loose expressive brushwork with occasional minhwa folk-art flatness, storybook illustration",
+    "color_palette": "muted sepia and warm paper beige base, deep indigo and charcoal-black ink for figures and shadow, one single crimson-red accent per image used only for danger, injustice, or the rabbit's wound",
+    "lighting": "low harsh directional light casting long hard shadows, overcast desaturated daylight, heavy contrast between lit paper and pooled black ink",
+    "composition_rule": "rule of thirds with generous empty hanji negative space at the top or one side for Korean text overlay; the rabbit rendered small and off-center to emphasize powerlessness, the tortoises rendered large and close to the frame edge",
+    "texture": "visible fibrous handmade paper grain, dry-brush streaks, ink bleed at edges, faint water stains",
+    "style_suffix": "Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+  },
+  "character_signatures": {
+    "토끼": "a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines",
+    "두목 거북이": "an enormous muscular green tortoise gang boss with a massive cracked dark shell, thick scarred neck and a smug heavy-lidded stare",
+    "부하 거북이 무리": "a pack of smaller green tortoises with matching cracked shells, hunched postures and identical blank grinning faces",
+    "마을 동물들": "timid village animals, a frail thin fox and a scrawny small tiger, watching from a distance with lowered heads"
+  },
+  "consistency_rules": [
+    "Every prompt ends with the exact style_suffix string.",
+    "Every prompt containing a character embeds that character's signature verbatim.",
+    "Exactly one crimson-red accent per image; everything else stays sepia/indigo/charcoal.",
+    "Violence is implied through silhouette, shadow and aftermath only - never graphic, never blood.",
+    "Rabbit is always drawn smaller in frame than any tortoise present.",
+    "Every prompt showing the hilltop turning-point tree or the tortoise boss's memoir embeds that object signature verbatim, so the same tree and the same book appear in every scene."
+  ],
+  "forbidden": [
+    "photorealistic",
+    "blood, gore, wounds",
+    "horror imagery",
+    "weapons",
+    "text, letters, hangul, or watermarks inside the image",
+    "branded or recognizable characters"
+  ],
+  "scene_count": 11,
+  "total_images": 12,
+  "prompts": [
+    {
+      "image_number": 0,
+      "type": "cover",
+      "filename": "cover.png",
+      "title": "Book Cover",
+      "title_ko": "토끼가 들려주는 토끼와 거북이",
+      "crimson_accent": "the rabbit's tattered crimson-red scarf",
+      "prompt": "Book cover illustration. A vast misty hillside seen from below, with the same lone bare gnarled turning-point tree, a thick twisted dark trunk with three crooked leafless branches spreading to one side, standing alone on the hill crest. In the lower left third stands a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines, turned to face the viewer and drawn very small. Looming across the right edge of the frame in near-silhouette is an enormous muscular green tortoise gang boss with a massive cracked dark shell, thick scarred neck and a smug heavy-lidded stare, so large that only his head and shell edge fit inside the frame. His long shadow stretches across the ground toward the rabbit. The rabbit's tattered crimson-red scarf is the only spot of red in the picture. Overcast desaturated daylight, heavy ink pooling in the shadows, quiet and ominous mood. Centered vertical composition with a large empty pale hanji sky area across the entire top third left completely blank for title text. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    },
+    {
+      "image_number": 1,
+      "type": "scene",
+      "scene_number": 1,
+      "filename": "scene_01.png",
+      "title": "The Rabbit Speaks",
+      "title_ko": "말을 거는 토끼",
+      "crimson_accent": "the rabbit's worn crimson-red scarf",
+      "prompt": "In the shadowed mouth of a narrow village alley stands a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines, leaning slightly out toward the viewer and raising one small paw as if quietly asking to be heard, looking directly at the viewer. Behind him a foggy village of low tiled roofs dissolves into pale washed-out ink. He is drawn small in the lower right third of the frame, dwarfed by the dark alley walls. His worn crimson-red scarf is the only spot of red in the picture. Low overcast light, long charcoal shadows across the alley floor, hushed confessional mood. Wide composition with the empty misty sky and blank hanji space filling the upper left for text overlay. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    },
+    {
+      "image_number": 2,
+      "type": "scene",
+      "scene_number": 2,
+      "filename": "scene_02.png",
+      "title": "The Gang of Tortoises Arrives",
+      "title_ko": "토끼를 찾아온 깡패 거북이 무리",
+      "crimson_accent": "a single crimson-red paper lantern",
+      "prompt": "A narrow village street completely filled by a pack of smaller green tortoises with matching cracked shells, hunched postures and identical blank grinning faces, advancing shoulder to shoulder toward a tiny wooden door at the end of the lane, their huge overlapping shadows swallowing the doorway. Peering out from behind shuttered windows above are timid village animals, a frail thin fox and a scrawny small tiger, watching from a distance with lowered heads. Behind the door stands a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines, drawn very small and pressed into the corner of the frame. One tortoise carries a single crimson-red paper lantern, the only red in the picture. Harsh low light from the lantern side, deep pooled indigo shadow filling the street, oppressive and menacing mood. Composition weighted heavy to the right with blank pale hanji sky at the top left for text. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    },
+    {
+      "image_number": 3,
+      "type": "scene",
+      "scene_number": 3,
+      "filename": "scene_03.png",
+      "title": "The Gang Boss's Threat",
+      "title_ko": "두목 거북이의 달리기 시합 협박",
+      "crimson_accent": "one bloodshot crimson-red eye of the tortoise boss",
+      "prompt": "Extreme low-angle view. Filling the entire left half of the frame is an enormous muscular green tortoise gang boss with a massive cracked dark shell, thick scarred neck and a smug heavy-lidded stare, bending down and thrusting his huge head close to a tiny figure below. Cowering in the lower right corner, no bigger than the tortoise's head, is a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines, pressing both ears down flat with his paws and trembling. Empty dirt ground, a bare washed sepia background. One bloodshot crimson-red eye of the tortoise boss is the only red in the picture. Hard raking sidelight, the tortoise's shadow completely covering the rabbit, suffocating and threatening mood. Rule of thirds with wide blank hanji space along the upper right for text overlay. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    },
+    {
+      "image_number": 4,
+      "type": "scene",
+      "scene_number": 4,
+      "filename": "scene_04.png",
+      "title": "The Day of Destiny",
+      "title_ko": "운명의 날",
+      "crimson_accent": "a single crimson-red flag at the starting line",
+      "prompt": "A wide starting line at the foot of a long bare hill, with the same lone bare gnarled turning-point tree, a thick twisted dark trunk with three crooked leafless branches spreading to one side, standing alone on the hill crest, silhouetted against the sky. Standing in two long rows and bowing deeply from the waist is a pack of smaller green tortoises with matching cracked shells, hunched postures and identical blank grinning faces, forming a corridor. Striding down the center of that corridor toward the viewer is an enormous muscular green tortoise gang boss with a massive cracked dark shell, thick scarred neck and a smug heavy-lidded stare, drawn largest and closest to the frame edge. Alone and forgotten at the far left edge stands a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines, drawn tiny. A single crimson-red flag planted at the starting line is the only red in the picture. Flat grey overcast daylight, long parallel shadows raking across the dirt, ceremonial and intimidating mood. Wide panoramic composition with a large empty pale hanji sky filling the top third for text. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    },
+    {
+      "image_number": 5,
+      "type": "scene",
+      "scene_number": 5,
+      "filename": "scene_05.png",
+      "title": "The Race Begins",
+      "title_ko": "시작된 달리기 시합",
+      "crimson_accent": "the rabbit's crimson-red scarf streaming in the wind",
+      "prompt": "A steep empty hill path seen from the side. Sprinting upward at full speed is a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines, twisting his head back over his shoulder to look downhill, ears streaming behind him, drawn small against the huge slope. Far below at the starting line, tiny in the distance yet still the heaviest dark mass in the frame, stands an enormous muscular green tortoise gang boss with a massive cracked dark shell, thick scarred neck and a smug heavy-lidded stare, arms folded and completely motionless, not running at all. Vast empty washed hillside between them. The rabbit's crimson-red scarf streaming in the wind is the only red in the picture. Cold flat daylight, one long shadow trailing behind the rabbit, lonely and uneasy mood. Diagonal composition with generous blank hanji space in the upper left for text. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    },
+    {
+      "image_number": 6,
+      "type": "scene",
+      "scene_number": 6,
+      "filename": "scene_06.png",
+      "title": "The Rabbit Ambushed",
+      "title_ko": "토끼의 기절",
+      "crimson_accent": "a crimson-red scarf fallen on the ground",
+      "prompt": "Dusk on the hill crest, dominated by the same lone bare gnarled turning-point tree, a thick twisted dark trunk with three crooked leafless branches spreading to one side, standing alone on the hill crest. From behind the thick trunk, the flat black silhouettes of a pack of smaller green tortoises with matching cracked shells, hunched postures and identical blank grinning faces surge out in ambush, many dark shapes with reaching arms rendered only as shadow puppets cast across the tree bark and the ground. Caught between them is the small pale shape of a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines, seized by the scruff of the neck, shown only in silhouette. No graphic violence, no blood, everything implied through overlapping shadow shapes on the ground. A crimson-red scarf fallen on the ground is the only red in the picture. Steep low backlight from the setting sun, enormous distorted shadows, tense and ominous mood. Composition with the tree mass on the right and empty darkening hanji sky on the left for text. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    },
+    {
+      "image_number": 7,
+      "type": "scene",
+      "scene_number": 7,
+      "filename": "scene_07.png",
+      "title": "The Tortoise's Victory",
+      "title_ko": "두목 거북이의 우승",
+      "crimson_accent": "a crimson-red victory cloth at the distant ceremony",
+      "prompt": "Foreground close to the viewer, at the foot of the same lone bare gnarled turning-point tree, a thick twisted dark trunk with three crooked leafless branches spreading to one side, standing alone on the hill crest, a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines lies crumpled and abandoned on the bare ground, ears limp, just waking, unharmed and unmarked. Far below at the bottom of the hill, small and bright with distance, a pack of smaller green tortoises with matching cracked shells, hunched postures and identical blank grinning faces toss an enormous muscular green tortoise gang boss with a massive cracked dark shell, thick scarred neck and a smug heavy-lidded stare into the air in a victory celebration. A crimson-red victory cloth thrown into the air at the distant ceremony is the only red in the picture. Cold late afternoon light, long shadow of the tree falling over the rabbit while the distant crowd stands in open light, cruel contrast and desolate mood. Deep-space composition with empty pale hanji sky filling the upper right for text. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    },
+    {
+      "image_number": 8,
+      "type": "scene",
+      "scene_number": 8,
+      "filename": "scene_08.png",
+      "title": "The Village Bookstore",
+      "title_ko": "마을 서점",
+      "crimson_accent": "the crimson-red bestseller band on the memoir",
+      "prompt": "The dim interior of an old village bookshop, tall crooked wooden shelves crowded with stacked books receding into shadow. In the middle of a narrow aisle stands a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines, drawn small and frozen mid-step, body gone rigid, staring at a display table ahead of him where one book stands upright: the same thick hardcover memoir, a dark indigo cloth cover bearing a painted oval portrait medallion of the tortoise boss and wrapped with a crimson-red bestseller band across its lower third, no lettering anywhere on it. Dust drifting in a shaft of pale window light. The crimson-red bestseller band on that book is the only red in the picture. Single hard shaft of daylight from a side window, deep indigo shadow filling the shelves, quiet mood of ordinary life about to break. Composition with the rabbit in the lower left third and a large empty dim wall of blank hanji space in the upper right for text. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    },
+    {
+      "image_number": 9,
+      "type": "scene",
+      "scene_number": 9,
+      "filename": "scene_09.png",
+      "title": "The Gang Boss's Memoir",
+      "title_ko": "두목 거북이의 자서전",
+      "crimson_accent": "a crimson-red bestseller band around the stacked books",
+      "prompt": "A bookshop bestseller display where identical copies of one book, every copy the same thick hardcover memoir, a dark indigo cloth cover bearing a painted oval portrait medallion of the tortoise boss and wrapped with a crimson-red bestseller band across its lower third, no lettering anywhere on it, are stacked into a towering pyramid that fills most of the frame and reaches past the top edge. Painted on every cover is the triumphant portrait of an enormous muscular green tortoise gang boss with a massive cracked dark shell, thick scarred neck and a smug heavy-lidded stare, posed heroically with one arm raised, repeated over and over across the stack. Standing before this wall of books, tiny and dwarfed in the lower left corner with his back to the viewer, is a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines, looking up at it. Book covers show only painted portraits, no letters or writing anywhere. A crimson-red bestseller band wrapped around the stacked books is the only red in the picture. Hard overhead shop light, the book tower casting a heavy shadow over the rabbit, mood of overwhelming betrayal. Vertical composition with blank pale hanji space along the left side for text. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    },
+    {
+      "image_number": 10,
+      "type": "scene",
+      "scene_number": 10,
+      "filename": "scene_10.png",
+      "title": "The False Memoir's Content",
+      "title_ko": "거짓된 자서전의 내용",
+      "crimson_accent": "a crimson-red finish-line ribbon in the fake illustration",
+      "prompt": "A large open book lying flat and filling the frame, the same thick hardcover memoir, a dark indigo cloth cover bearing a painted oval portrait medallion of the tortoise boss and wrapped with a crimson-red bestseller band across its lower third, no lettering anywhere on it, now opened so its two blank hanji pages hold a cheerful falsified picture painted in bright flat minhwa folk-art style: under a round tree a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines naps lazily with a smile while an enormous muscular green tortoise gang boss with a massive cracked dark shell, thick scarred neck and a smug heavy-lidded stare crawls diligently past him toward the finish. The illustration inside the book is sunny and innocent, while the paper margins around it and the world outside the book are dark washed indigo, and the long shadow of the real rabbit's drooping ears falls across the open pages from outside the frame. No letters or writing on the pages, only the painted picture. A crimson-red finish-line ribbon inside the fake illustration is the only red in the picture. Cold sidelight from beyond the book, sharp contrast between the bright lie and the dark margins, mood of manufactured truth and mockery. Overhead composition with a wide band of empty dark hanji margin along the bottom for text. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    },
+    {
+      "image_number": 11,
+      "type": "scene",
+      "scene_number": 11,
+      "filename": "scene_11.png",
+      "title": "The Rabbit's Anguish",
+      "title_ko": "토끼의 억울함",
+      "crimson_accent": "a torn crimson-red scrap of scarf in the rabbit's paw",
+      "prompt": "A dark narrow alley corner at night. Crouched low against the wall, a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines stretches one paw out toward the viewer in desperate appeal, eyes wide and pleading, drawn small in the lower right third. Behind him in the washed grey middle distance stand timid village animals, a frail thin fox and a scrawny small tiger, watching from a distance with lowered heads, turned away with their backs to him, one covering its eyes. Far beyond them the faint silhouette of a huge cracked tortoise shell looms in the fog. A torn crimson-red scrap of scarf held out in the rabbit's paw is the only red in the picture. Single cold moonlight from above, long converging shadows, mood of isolated desperate truth-telling. Composition with a large expanse of empty dark hanji wall in the upper left for text. Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+    }
+  ],
+  "object_signatures": {
+    "반환점 나무": "the same lone bare gnarled turning-point tree, a thick twisted dark trunk with three crooked leafless branches spreading to one side, standing alone on the hill crest",
+    "자서전": "the same thick hardcover memoir, a dark indigo cloth cover bearing a painted oval portrait medallion of the tortoise boss and wrapped with a crimson-red bestseller band across its lower third, no lettering anywhere on it"
+  }
+}

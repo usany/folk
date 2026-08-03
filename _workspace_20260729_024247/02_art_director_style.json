@@ -1,0 +1,35 @@
+{
+  "book_title": "토끼가 들려주는 토끼와 거북이",
+  "tone": "dark satire, unreliable-narrator testimony, injustice and manufactured truth",
+  "style_guide": {
+    "art_style": "Korean ink wash painting (sumukhwa) on textured hanji paper, loose expressive brushwork with occasional minhwa folk-art flatness, storybook illustration",
+    "color_palette": "muted sepia and warm paper beige base, deep indigo and charcoal-black ink for figures and shadow, one single crimson-red accent per image used only for danger, injustice, or the rabbit's wound",
+    "lighting": "low harsh directional light casting long hard shadows, overcast desaturated daylight, heavy contrast between lit paper and pooled black ink",
+    "composition_rule": "rule of thirds with generous empty hanji negative space at the top or one side for Korean text overlay; the rabbit rendered small and off-center to emphasize powerlessness, the tortoises rendered large and close to the frame edge",
+    "texture": "visible fibrous handmade paper grain, dry-brush streaks, ink bleed at edges, faint water stains",
+    "style_suffix": "Korean ink wash painting on textured hanji paper, muted sepia and indigo palette with stark charcoal brushstrokes and a single crimson accent, dry-brush texture and ink bleed, harsh directional light with long shadows, generous negative space for text, children's storybook illustration, no text, no letters, no watermark"
+  },
+  "character_signatures": {
+    "토끼": "a thin frail white rabbit with long drooping ears, narrow shoulders and wide anxious eyes, drawn in fine trembling ink lines",
+    "두목 거북이": "an enormous muscular green tortoise gang boss with a massive cracked dark shell, thick scarred neck and a smug heavy-lidded stare",
+    "부하 거북이 무리": "a pack of smaller green tortoises with matching cracked shells, hunched postures and identical blank grinning faces",
+    "마을 동물들": "timid village animals, a frail thin fox and a scrawny small tiger, watching from a distance with lowered heads"
+  },
+  "consistency_rules": [
+    "Every prompt ends with the exact style_suffix string.",
+    "Every prompt containing a character embeds that character's signature verbatim.",
+    "Exactly one crimson-red accent per image; everything else stays sepia/indigo/charcoal.",
+    "Violence is implied through silhouette, shadow and aftermath only — never graphic, never blood.",
+    "Rabbit is always drawn smaller in frame than any tortoise present."
+  ],
+  "forbidden": [
+    "photorealistic",
+    "blood, gore, wounds",
+    "horror imagery",
+    "weapons",
+    "text, letters, hangul, or watermarks inside the image",
+    "branded or recognizable characters"
+  ],
+  "scene_count": 11,
+  "total_images": 12
+}
