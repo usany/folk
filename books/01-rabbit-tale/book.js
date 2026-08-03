@@ -116,10 +116,31 @@ function render() {
     setTimeout(() => {
       const playBtn = document.getElementById('playBtn');
       const status = document.getElementById('audioStatus');
+      const sceneBody = document.getElementById('sceneBody');
       const audio = setupAudioElement(audioFile);
 
       if (playBtn && audio) {
         playBtn.onclick = () => toggleAudio(audio, playBtn, status);
+
+        // Click on words to rewind speech
+        if (sceneBody) {
+          const words = sceneBody.querySelectorAll('.word');
+          words.forEach(word => {
+            word.style.cursor = 'pointer';
+            word.onclick = (e) => {
+              e.stopPropagation();
+              if (!audio.paused || audio.duration) {
+                const wordIndex = parseInt(word.getAttribute('data-index'));
+                const progress = wordIndex / (words.length - 1 || 1);
+                const seekTime = Math.max(0, progress * audio.duration);
+                audio.currentTime = seekTime;
+                if (audio.paused) {
+                  audio.play();
+                }
+              }
+            };
+          });
+        }
 
         // Clean all old listeners
         audio.onplay = null;
