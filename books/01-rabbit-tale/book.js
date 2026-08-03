@@ -102,6 +102,12 @@ function render() {
         });
         audio.addEventListener('ended', () => {
           playBtn.textContent = '🔊 읽어주기';
+          setTimeout(() => {
+            const totalPages = bookData.pages.length;
+            if (currentPage < totalPages - 1) {
+              nextPage();
+            }
+          }, 500);
         });
         audio.addEventListener('error', () => {
           status.textContent = '(오디오 파일 없음)';
