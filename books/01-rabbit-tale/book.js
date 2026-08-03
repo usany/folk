@@ -1,6 +1,7 @@
 let currentPage = 0;
 let bookData = null;
 let currentAudio = null;
+let autoAdvance = true;
 
 // Inline fallback data if fetch fails
 const fallbackData = {
@@ -26,6 +27,16 @@ const fallbackData = {
   ]
 };
 
+function setupAudioManager() {
+  const audioContainer = document.createElement('div');
+  audioContainer.id = 'audio-manager';
+  audioContainer.style.display = 'none';
+  document.body.appendChild(audioContainer);
+  return audioContainer;
+}
+
+const audioManager = setupAudioManager();
+
 function toggleAudio(audio, button, status) {
   if (audio.paused) {
     audio.play().catch(err => {
@@ -35,6 +46,16 @@ function toggleAudio(audio, button, status) {
   } else {
     audio.pause();
   }
+}
+
+function setupAudioElement(audioFile) {
+  let audio = audioManager.querySelector('audio');
+  if (!audio) {
+    audio = document.createElement('audio');
+    audioManager.appendChild(audio);
+  }
+  audio.src = audioFile;
+  return audio;
 }
 
 async function loadBook() {
@@ -67,6 +88,16 @@ function render() {
     `;
   } else if (page.type === 'scene') {
     const audioFile = `audio/page_${String(page.number).padStart(2, '0')}.mp3`;
+
+    // Split text into words for highlighting
+    const words = page.body.split(/(\s+)/);
+    const highlightedBody = words.map((word, i) => {
+      if (word.trim()) {
+        return `<span class="word" data-index="${Math.floor(i/2)}">${word}</span>`;
+      }
+      return word;
+    }).join('');
+
     pageEl.innerHTML = `
       <div class="scene-image">
         <img src="${page.image}" alt="${page.title}" loading="lazy">
@@ -77,44 +108,70 @@ function render() {
           <button class="play-button" id="playBtn" aria-label="재생">🔊 읽어주기</button>
           <span class="audio-status" id="audioStatus"></span>
         </div>
-        <p class="scene-body">${page.body}</p>
+        <p class="scene-body" id="sceneBody">${highlightedBody}</p>
         <div class="scene-emotion">${page.emotion}</div>
       </div>
-      <audio id="sceneAudio" src="${audioFile}"></audio>
     `;
 
     setTimeout(() => {
       const playBtn = document.getElementById('playBtn');
-      const audio = document.getElementById('sceneAudio');
       const status = document.getElementById('audioStatus');
+      const audio = setupAudioElement(audioFile);
 
       if (playBtn && audio) {
-        playBtn.addEventListener('click', () => toggleAudio(audio, playBtn, status));
-        audio.addEventListener('play', () => {
+        playBtn.onclick = () => toggleAudio(audio, playBtn, status);
+
+        // Clean all old listeners
+        audio.onplay = null;
+        audio.onpause = null;
+        audio.onended = null;
+        audio.onerror = null;
+
+        audio.onplay = () => {
           playBtn.textContent = '⏸ 중지';
           if (currentAudio && currentAudio !== audio) {
             currentAudio.pause();
           }
           currentAudio = audio;
-        });
-        audio.addEventListener('pause', () => {
+        };
+
+        audio.onpause = () => {
           playBtn.textContent = '🔊 읽어주기';
-        });
-        audio.addEventListener('ended', () => {
+        };
+
+        audio.ontimeupdate = () => {
+          const sceneBody = document.getElementById('sceneBody');
+          if (sceneBody && audio.duration) {
+            const progress = audio.currentTime / audio.duration;
+            const words = sceneBody.querySelectorAll('.word');
+            const currentWordIndex = Math.floor(progress * words.length);
+
+            words.forEach((word, index) => {
+              word.classList.toggle('active', index < currentWordIndex);
+            });
+          }
+        };
+
+        audio.onended = () => {
           playBtn.textContent = '🔊 읽어주기';
-          setTimeout(() => {
-            const totalPages = bookData.pages.length;
-            if (currentPage < totalPages - 1) {
-              nextPage();
-            }
-          }, 500);
-        });
-        audio.addEventListener('error', () => {
+          // Clear highlighting
+          const sceneBody = document.getElementById('sceneBody');
+          if (sceneBody) {
+            sceneBody.querySelectorAll('.word.active').forEach(w => {
+              w.classList.remove('active');
+            });
+          }
+          if (autoAdvance && currentPage < bookData.pages.length - 1) {
+            setTimeout(() => nextPage(), 1000);
+          }
+        };
+
+        audio.onerror = () => {
           status.textContent = '(오디오 파일 없음)';
           status.style.color = '#999';
           playBtn.disabled = true;
           playBtn.style.opacity = '0.5';
-        });
+        };
       }
     }, 0);
   } else if (page.type === 'ending') {
@@ -174,10 +231,18 @@ function goToPage(n) {
 }
 
 function nextPage() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
   goToPage(currentPage + 1);
 }
 
 function prevPage() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
   goToPage(currentPage - 1);
 }
 
