@@ -38,12 +38,12 @@ def generate_tts_for_book(book_dir, output_dir="audio"):
         page_num = page.get('number', idx)
         title = page.get('title', '')
         body = page.get('body', '')
-        narration_text = f"{title}. {body}".strip()
+        narration_text = body.strip()
 
         if not narration_text:
             continue
 
-        audio_file = audio_path / f"page_{page_num:02d}.mp3"
+        audio_file = audio_path / f"page_speech_{page_num:02d}.mp3"
         print(f"[{idx}/{total}] Page {page_num}: {title[:40]}...", end=" ", flush=True)
 
         try:
