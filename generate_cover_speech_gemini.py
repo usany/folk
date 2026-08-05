@@ -6,7 +6,6 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-from generate_cover_speech_alt import generate_cover_speech_alt
 
 # Load environment variables
 load_dotenv()
@@ -55,35 +54,45 @@ def generate_cover_speech(book_dir, output_dir="audio"):
     audio_file = audio_path / "cover_speech.wav"
     print(f"[1/1] Generating speech for cover title...", end=" ", flush=True)
 
-    # Try Gemini 3.1 first
-    for model_name in ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts']:
+    # Try Gemini TTS models
+    for model_name in ['gemini-2.5-flash-preview-tts', 'gemini-3.1-flash-tts-preview']:
         try:
             model = genai.GenerativeModel(model_name)
 
-            response = model.generate_content(
-                genai.types.ContentType.text(cover_title)
-            )
+            # Pass text directly without ContentType wrapper
+            response = model.generate_content(cover_title)
 
-            # Check if response contains audio
-            if response.data and hasattr(response, 'audio_data'):
+            # Check if response contains audio data
+            if hasattr(response, 'audio_data') and response.audio_data:
                 # Save the audio file
-                with open(audio_file, 'wb') as f:
+                audio_wav_file = audio_path / "cover_speech.wav"
+                with open(audio_wav_file, 'wb') as f:
                     f.write(response.audio_data)
 
-                file_size = audio_file.stat().st_size / 1024
+                file_size = audio_wav_file.stat().st_size / 1024
                 print(f"✓ ({file_size:.1f} KB)")
                 print(f"\n✅ Cover speech generated successfully!")
-                print(f"📄 Output: {audio_file}")
+                print(f"📄 Output: {audio_wav_file}")
                 return True
+            elif hasattr(response, 'parts') and response.parts:
+                # Try to extract audio from parts
+                for part in response.parts:
+                    if hasattr(part, 'audio_data') and part.audio_data:
+                        with open(audio_file, 'wb') as f:
+                            f.write(part.audio_data)
+                        file_size = audio_file.stat().st_size / 1024
+                        print(f"✓ ({file_size:.1f} KB)")
+                        print(f"\n✅ Cover speech generated successfully!")
+                        print(f"📄 Output: {audio_file}")
+                        return True
 
         except Exception as e:
-            if model_name == 'gemini-3.1-flash-tts-preview':
-                print(f"✗ (3.1 failed: {str(e)}, trying 2.5...)")
+            if model_name == 'gemini-2.5-flash-preview-tts':
+                print(f"✗ (2.5 failed: {str(e)}, trying 3.1...)")
             else:
                 print(f"✗ ({str(e)})")
-                print("\n⚠️  Trying alternative method...")
 
-    return generate_cover_speech_alt(book_dir, output_dir, cover_title, api_key)
+    return False
 
 if __name__ == "__main__":
     book_name = "01-rabbit-tale"
