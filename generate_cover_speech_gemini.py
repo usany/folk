@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+from generate_cover_speech_alt import generate_cover_speech_alt
 
 # Load environment variables
 load_dotenv()
@@ -54,64 +55,35 @@ def generate_cover_speech(book_dir, output_dir="audio"):
     audio_file = audio_path / "cover_speech.wav"
     print(f"[1/1] Generating speech for cover title...", end=" ", flush=True)
 
-    try:
-        # Use the Gemini 2.5 Flash TTS model
-        model = genai.GenerativeModel('gemini-2.5-flash-preview-tts')
+    # Try Gemini 3.1 first
+    for model_name in ['gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts']:
+        try:
+            model = genai.GenerativeModel(model_name)
 
-        response = model.generate_content(
-            genai.types.ContentType.text(cover_title)
-        )
+            response = model.generate_content(
+                genai.types.ContentType.text(cover_title)
+            )
 
-        # Check if response contains audio
-        if response.data and hasattr(response, 'audio_data'):
-            # Save the audio file
-            with open(audio_file, 'wb') as f:
-                f.write(response.audio_data)
+            # Check if response contains audio
+            if response.data and hasattr(response, 'audio_data'):
+                # Save the audio file
+                with open(audio_file, 'wb') as f:
+                    f.write(response.audio_data)
 
-            file_size = audio_file.stat().st_size / 1024
-            print(f"✓ ({file_size:.1f} KB)")
-            print(f"\n✅ Cover speech generated successfully!")
-            print(f"📄 Output: {audio_file}")
-            return True
-        else:
-            # Fallback: Try using the text-to-speech method if available
-            print("\n⚠️  Audio not in response, trying alternative method...")
-            return generate_cover_speech_alt(book_dir, output_dir, cover_title, api_key)
+                file_size = audio_file.stat().st_size / 1024
+                print(f"✓ ({file_size:.1f} KB)")
+                print(f"\n✅ Cover speech generated successfully!")
+                print(f"📄 Output: {audio_file}")
+                return True
 
-    except Exception as e:
-        print(f"✗ ({str(e)})")
-        print("\n⚠️  Trying alternative method...")
-        return generate_cover_speech_alt(book_dir, output_dir, cover_title, api_key)
+        except Exception as e:
+            if model_name == 'gemini-3.1-flash-tts-preview':
+                print(f"✗ (3.1 failed: {str(e)}, trying 2.5...)")
+            else:
+                print(f"✗ ({str(e)})")
+                print("\n⚠️  Trying alternative method...")
 
-def generate_cover_speech_alt(book_dir, output_dir, cover_title, api_key):
-    """Alternative method using gTTS or pyttsx3."""
-    try:
-        from gtts import gTTS
-    except ImportError:
-        print("Installing gtts...")
-        import subprocess
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "gtts"])
-        from gtts import gTTS
-
-    audio_path = Path(book_dir) / output_dir
-    audio_path.mkdir(exist_ok=True)
-
-    audio_file = audio_path / "cover_speech.mp3"
-    print(f"[1/1] Generating speech for cover title (using gTTS)...", end=" ", flush=True)
-
-    try:
-        # Use gTTS with Korean language
-        tts = gTTS(text=cover_title, lang='ko', slow=False)
-        tts.save(str(audio_file))
-
-        file_size = audio_file.stat().st_size / 1024
-        print(f"✓ ({file_size:.1f} KB)")
-        print(f"\n✅ Cover speech generated successfully!")
-        print(f"📄 Output: {audio_file}")
-        return True
-    except Exception as e:
-        print(f"✗ ({str(e)})")
-        return False
+    return generate_cover_speech_alt(book_dir, output_dir, cover_title, api_key)
 
 if __name__ == "__main__":
     book_name = "01-rabbit-tale"
