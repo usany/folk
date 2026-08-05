@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate text-to-speech audio for book cover title using Gemini 3.1 Flash TTS model."""
+"""Generate text-to-speech audio for book cover title using Gemini 2.5 Flash TTS model."""
 
 import json
 import sys
@@ -11,7 +11,7 @@ import os
 load_dotenv()
 
 def generate_cover_speech(book_dir, output_dir="audio"):
-    """Generate TTS for cover title using Gemini 3.1 Flash TTS model."""
+    """Generate TTS for cover title using Gemini 2.5 Flash TTS model."""
     try:
         import google.generativeai as genai
     except ImportError:
@@ -55,8 +55,8 @@ def generate_cover_speech(book_dir, output_dir="audio"):
     print(f"[1/1] Generating speech for cover title...", end=" ", flush=True)
 
     try:
-        # Use the Gemini 3.1 Flash TTS model
-        model = genai.GenerativeModel('gemini-3.1-flash-tts-preview')
+        # Use the Gemini 2.5 Flash TTS model
+        model = genai.GenerativeModel('gemini-2.5-flash-preview-tts')
 
         response = model.generate_content(
             genai.types.ContentType.text(cover_title)
