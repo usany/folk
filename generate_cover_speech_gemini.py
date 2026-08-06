@@ -51,7 +51,7 @@ def generate_cover_speech(book_dir, output_dir="audio"):
     print(f"📁 Audio directory: {audio_path}")
     print(f"🎤 Cover title: {cover_title}\n")
 
-    audio_file = audio_path / "cover_speech.wav"
+    audio_file = audio_path / "cover_speech.mp3"
     print(f"[1/1] Generating speech for cover title...", end=" ", flush=True)
 
     # Try Gemini TTS models
@@ -65,14 +65,13 @@ def generate_cover_speech(book_dir, output_dir="audio"):
             # Check if response contains audio data
             if hasattr(response, 'audio_data') and response.audio_data:
                 # Save the audio file
-                audio_wav_file = audio_path / "cover_speech.wav"
-                with open(audio_wav_file, 'wb') as f:
+                with open(audio_file, 'wb') as f:
                     f.write(response.audio_data)
 
-                file_size = audio_wav_file.stat().st_size / 1024
+                file_size = audio_file.stat().st_size / 1024
                 print(f"✓ ({file_size:.1f} KB)")
                 print(f"\n✅ Cover speech generated successfully!")
-                print(f"📄 Output: {audio_wav_file}")
+                print(f"📄 Output: {audio_file}")
                 return True
             elif hasattr(response, 'parts') and response.parts:
                 # Try to extract audio from parts
