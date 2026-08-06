@@ -28,6 +28,5 @@ interaction = client.interactions.create(
     }
 )
 
-with open('out.wav', 'wb') as f:
-    f.write(base64.b64decode(interaction.output_audio.data))
+wave_file('out.wav', base64.b64decode(interaction.output_audio.data))
 print("✓ Generated out.wav")
