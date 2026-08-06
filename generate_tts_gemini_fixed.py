@@ -66,7 +66,33 @@ def generate_tts_for_book(book_dir, output_dir="audio", output_format="mp3"):
         page_num = page.get('number', idx)
         title = page.get('title', '')
         body = page.get('body', '')
+
+        # Get voice tone instruction (from voice_tone field or emotion)
+        voice_tone = page.get('voice_tone', '')
+        if not voice_tone and page.get('emotion'):
+            # Map emotion to voice tone instruction
+            emotion_to_tone = {
+                '조심스러운 호소, 은밀함': 'Say in a cautious, secretive whisper',
+                '위협, 압도': 'Say in a menacing, threatening tone',
+                '공포, 굴복': 'Say in a fearful, trembling voice',
+                '의식화된 위압, 고립': 'Say in a tense, isolated whisper',
+                '필사적 질주, 불길한 위화감': 'Say desperately while breathless',
+                '매복, 충격': 'Say in shocked, panicked tone',
+                '버려짐, 잔인한 대비': 'Say sadly with bitter irony',
+                '일상 속 불시의 충격': 'Say in startled, confused tone',
+                '압도적 배신감': 'Say with overwhelming despair',
+                '조작된 진실, 조롱': 'Say with bitter resignation',
+                '조롱': 'Say mockingly',
+                '흥분': 'Say excitedly',
+                '슬픔': 'Say sadly',
+                '분노': 'Say angrily',
+            }
+            voice_tone = emotion_to_tone.get(page.get('emotion'), '')
+
+        # Build narration with voice tone instruction
         narration_text = f"{title}. {body}".strip()
+        if voice_tone:
+            narration_text = f"{voice_tone}: {narration_text}"
 
         if not narration_text:
             continue
