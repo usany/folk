@@ -102,71 +102,66 @@ def generate_tts_for_book(book_dir, output_dir="audio", output_format="mp3"):
         print(f"[{idx}/{total}] Page {page_num}: {title[:40]}...", end=" ", flush=True)
 
         try:
-            # FIX: Use correct Gemini TTS API format
-            tts_interaction = client.interactions.create(
+            # Use google.genai TTS API
+            response = client.models.generate_content(
                 model="gemini-3.1-flash-tts-preview",
-                input=narration_text,
-                response_format={"type": "audio"}
+                contents=narration_text
             )
 
-            if hasattr(tts_interaction, 'output_audio') and tts_interaction.output_audio:
-                audio_data = tts_interaction.output_audio
-                # Handle different audio data formats
-                if isinstance(audio_data, bytes):
-                    audio_bytes = audio_data
-                elif hasattr(audio_data, 'data'):
-                    data = audio_data.data
-                    if isinstance(data, bytes):
-                        audio_bytes = data
-                    elif isinstance(data, str):
-                        # FIX: Properly decode base64 if needed
-                        try:
-                            audio_bytes = base64.b64decode(data)
-                        except Exception:
-                            audio_bytes = data.encode() if isinstance(data, str) else bytes(data)
-                    else:
-                        audio_bytes = bytes(data)
-                else:
-                    audio_bytes = bytes(audio_data)
+            # Extract audio data from response
+            audio_bytes = None
+            if hasattr(response, 'audio_data') and response.audio_data:
+                audio_bytes = response.audio_data
+            elif hasattr(response, 'parts') and response.parts:
+                for part in response.parts:
+                    if hasattr(part, 'inline_data'):
+                        # Audio is in inline_data
+                        if hasattr(part.inline_data, 'data'):
+                            audio_bytes = part.inline_data.data
+                        else:
+                            audio_bytes = bytes(part.inline_data)
+                        break
 
-                # FIX: Validate audio data
-                if not audio_bytes or len(audio_bytes) < 100:
-                    print(f"✗ (Corrupted/empty audio data, size: {len(audio_bytes)} bytes)")
-                    retry_delay = 5
-                    continue
-
-                # FIX: Save to temporary MP3 first
-                temp_mp3 = audio_path / f".temp_page_{page_num:02d}.mp3"
-                with open(temp_mp3, 'wb') as f:
-                    f.write(audio_bytes)
-
-                # Convert to WAV if requested
-                if output_format == "wav":
-                    try:
-                        subprocess.run(
-                            ["ffmpeg", "-i", str(temp_mp3), "-acodec", "pcm_s16le",
-                             "-ar", "24000", str(audio_file), "-y"],
-                            capture_output=True,
-                            check=True,
-                            timeout=10
-                        )
-                        temp_mp3.unlink()  # Remove temp MP3
-                    except subprocess.CalledProcessError as e:
-                        print(f"✗ (WAV conversion failed: {e.stderr.decode()[:50]})")
-                        continue
-                    except subprocess.TimeoutExpired:
-                        print(f"✗ (WAV conversion timeout)")
-                        continue
-                else:
-                    # Keep as MP3
-                    temp_mp3.rename(audio_file)
-
-                file_size = audio_file.stat().st_size / 1024
-                print(f"✓ ({file_size:.1f} KB)")
-                retry_delay = 2
-            else:
+            if audio_bytes is None:
                 print(f"✗ (No audio output)")
                 retry_delay = 5
+                continue
+
+            # Validate audio data
+            if not audio_bytes or len(audio_bytes) < 100:
+                print(f"✗ (Corrupted/empty audio data, size: {len(audio_bytes)} bytes)")
+                retry_delay = 5
+                continue
+
+            # Save to temporary MP3 first
+            temp_mp3 = audio_path / f".temp_page_{page_num:02d}.mp3"
+            with open(temp_mp3, 'wb') as f:
+                f.write(audio_bytes)
+
+            # Convert to WAV if requested
+            if output_format == "wav":
+                try:
+                    subprocess.run(
+                        ["ffmpeg", "-i", str(temp_mp3), "-acodec", "pcm_s16le",
+                         "-ar", "24000", str(audio_file), "-y"],
+                        capture_output=True,
+                        check=True,
+                        timeout=10
+                    )
+                    temp_mp3.unlink()  # Remove temp MP3
+                except subprocess.CalledProcessError as e:
+                    print(f"✗ (WAV conversion failed: {e.stderr.decode()[:50]})")
+                    continue
+                except subprocess.TimeoutExpired:
+                    print(f"✗ (WAV conversion timeout)")
+                    continue
+            else:
+                # Keep as MP3
+                temp_mp3.rename(audio_file)
+
+            file_size = audio_file.stat().st_size / 1024
+            print(f"✓ ({file_size:.1f} KB)")
+            retry_delay = 2
 
         except Exception as e:
             error_msg = str(e)
