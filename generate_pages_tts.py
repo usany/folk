@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""Generate TTS for all book pages using the working interactions.create() format."""
 from google import genai
 import base64
 import json
@@ -9,10 +8,6 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-
-def save_audio(filename, audio_bytes):
-    with open(filename, 'wb') as f:
-        f.write(audio_bytes)
 
 api_key = os.getenv('GEMINI_API_KEY', '').strip("'\"")
 client = genai.Client(api_key=api_key)
@@ -34,7 +29,6 @@ pages = book_data.get('pages', [])
 scenes = [p for p in pages if p.get('type') == 'scene']
 total = len(scenes)
 
-# Voice tone mapping
 emotion_to_tone = {
     '조심스러운 호소, 은밀함': 'Say in a cautious, secretive whisper',
     '위협, 압도': 'Say in a menacing, threatening tone',
@@ -55,22 +49,20 @@ for idx, page in enumerate(scenes, 1):
     title = page.get('title', '')
     body = page.get('body', '')
 
-    # Get voice tone
     tone = page.get('voice_tone', '')
     if not tone and page.get('emotion'):
         tone = emotion_to_tone.get(page.get('emotion'), '')
 
-    # Build input text
     text = f"{title}. {body}".strip()
     if tone:
         text = f"{tone}: {text}"
 
-    output_file = audio_dir / f"page_{page_num:02d}.mp3"
-    print(f"[{idx}/{total}] Page {page_num}: {title[:40]}...", end=" ", flush=True)
+    output_file = audio_dir / f"page_{page_num:02d}.wav"
+    print(f"[{idx}/{total}] Page {page_num}...", end=" ", flush=True)
 
     try:
         interaction = client.interactions.create(
-            model="gemini-3.1-flash-tts-preview",
+            model="gemini-2.5-flash-preview-tts",
             input=text,
             response_format={"type": "audio"},
             generation_config={
@@ -80,11 +72,12 @@ for idx, page in enumerate(scenes, 1):
             }
         )
 
-        save_audio(str(output_file), base64.b64decode(interaction.output_audio.data))
-        size = output_file.stat().st_size / 1024
-        print(f"✓ ({size:.1f}KB)")
+        with open(output_file, 'wb') as f:
+            f.write(base64.b64decode(interaction.output_audio.data))
+
+        print(f"✓")
 
     except Exception as e:
-        print(f"✗ ({str(e)[:50]})")
+        print(f"✗ ({str(e)[:40]})")
 
 print(f"\n✅ Done!")

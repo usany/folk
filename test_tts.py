@@ -18,7 +18,7 @@ api_key = os.getenv('GEMINI_API_KEY', '').strip("'\"")
 client = genai.Client(api_key=api_key)
 
 interaction = client.interactions.create(
-    model="gemini-3.1-flash-tts-preview",
+    model="gemini-2.5-flash-preview-tts",
     input="Say cheerfully: Have a wonderful day!",
     response_format={"type": "audio"},
     generation_config={
@@ -28,5 +28,6 @@ interaction = client.interactions.create(
     }
 )
 
-wave_file('out.wav', base64.b64decode(interaction.output_audio.data))
+with open('out.wav', 'wb') as f:
+    f.write(base64.b64decode(interaction.output_audio.data))
 print("✓ Generated out.wav")
