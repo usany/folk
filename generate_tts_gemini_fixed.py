@@ -102,14 +102,11 @@ def generate_tts_for_book(book_dir, output_dir="audio", output_format="mp3"):
         print(f"[{idx}/{total}] Page {page_num}: {title[:40]}...", end=" ", flush=True)
 
         try:
-            # FIX: Use speech_config as dict, not list
+            # FIX: Use correct Gemini TTS API format
             tts_interaction = client.interactions.create(
                 model="gemini-3.1-flash-tts-preview",
                 input=narration_text,
-                response_format={"type": "audio"},
-                generation_config={
-                    "speech_config": {"voice": "Puck"}  # Changed from list to dict
-                }
+                response_format={"type": "audio"}
             )
 
             if hasattr(tts_interaction, 'output_audio') and tts_interaction.output_audio:
