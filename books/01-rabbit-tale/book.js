@@ -94,7 +94,7 @@ function render() {
       const coverPlayBtn = document.getElementById('coverPlayBtn');
       if (coverPlayBtn) {
         coverPlayBtn.onclick = () => {
-          const coverAudio = setupAudioElement('audio/cover_speech.mp3');
+          const coverAudio = setupAudioElement('audio/cover_speech.wav');
 
           // Clear any previous listeners
           coverAudio.onended = null;
@@ -154,7 +154,7 @@ function render() {
       }
     }, 0);
   } else if (page.type === 'scene') {
-    const audioFile = `audio/page_${String(page.number).padStart(2, '0')}.mp3`;
+    const audioFile = `audio/page_${String(page.number).padStart(2, '0')}.wav`;
 
     // Split text into words for highlighting
     const words = page.body.split(/(\s+)/);
