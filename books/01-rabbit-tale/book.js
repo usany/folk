@@ -94,7 +94,7 @@ function render() {
       const coverPlayBtn = document.getElementById('coverPlayBtn');
       if (coverPlayBtn) {
         coverPlayBtn.onclick = () => {
-          const coverAudio = setupAudioElement('audio/cover_speech.wav');
+          const coverAudio = setupAudioElement('audio/page_00.wav');
 
           // Clear any previous listeners
           coverAudio.onended = null;
