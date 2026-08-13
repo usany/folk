@@ -455,6 +455,29 @@ body::before {
 
   .ctrl-btn { width: 46px; height: 46px; }
 
+  /* prev/next inline with the book: flank the page, vertically centered */
+  .controls {
+    position: fixed;
+    inset: 0;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+    padding: 0 0.5rem;
+    pointer-events: none;
+  }
+  .controls .ctrl-btn { pointer-events: auto; }
+  .controls .indicator {
+    position: fixed;
+    bottom: 0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.45);
+    padding: 0.3rem 0.9rem;
+    border-radius: 20px;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
   .dots { gap: 7px; }
   .dot { width: 8px; height: 8px; }
 }
