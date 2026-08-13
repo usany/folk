@@ -177,7 +177,6 @@ function render() {
           <span class="audio-status" id="audioStatus"></span>
         </div>
         <p class="scene-body" id="sceneBody">${highlightedBody}</p>
-        <div class="scene-emotion">${page.emotion}</div>
       </div>
     `;
 

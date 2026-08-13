@@ -481,6 +481,14 @@ body::before {
   .page.scene { grid-template-rows: minmax(0, 30%) 1fr; }
 }
 
+/* Medium / tablet portrait: keep text visible and give it more room */
+@media (min-width: 761px) and (max-width: 1024px) {
+  .page.scene { grid-template-columns: minmax(0, 42%) 1fr; }
+  .scene-body { min-height: 0; }
+  .scene-body h2 { font-size: clamp(1.3rem, 3.6vw, 1.8rem); }
+  .scene-body p { font-size: clamp(1rem, 2.2vw, 1.25rem); line-height: 1.75; }
+}
+
 .back-to-library {
   position: fixed;
   top: 20px;

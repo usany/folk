@@ -159,6 +159,36 @@ body {
   }
 }
 
+/* Medium / tablet: keep text visible and give it more room */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .scene-image { flex-basis: 40%; }
+  .scene-text { min-height: 0; }
+  .scene-body { font-size: clamp(0.95rem, 2vw, 1.05rem); line-height: 1.7; }
+}
+
+/* Gap zone (601-767px): column layout, but the image must not fill the
+   whole container height or it pushes the text out (overflow hidden). */
+@media (min-width: 601px) and (max-width: 767px) {
+  .page.scene {
+    flex-direction: column;
+    gap: var(--spacing);
+  }
+  .scene-image {
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: 140px;
+    max-height: 42vh;
+  }
+  .scene-text {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .scene-body {
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
+    line-height: 1.75;
+  }
+}
+
 .scene-image img {
   width: 100%;
   height: 100%;
