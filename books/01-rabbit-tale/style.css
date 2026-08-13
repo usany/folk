@@ -451,12 +451,14 @@ button:disabled {
   }
 
   .controls {
-    inset: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     transform: none;
     justify-content: space-between;
-    gap: 0;
-    padding: 0 0.5rem;
-    background: transparent;
+    gap: 18px;
+    padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
     backdrop-filter: none;
     border-radius: 0;
     flex-wrap: nowrap;
@@ -465,10 +467,6 @@ button:disabled {
   .controls button { pointer-events: auto; }
 
   #indicator {
-    position: fixed;
-    bottom: 0.75rem;
-    left: 50%;
-    transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.7);
     padding: 0.35rem 0.9rem;
     border-radius: 20px;
