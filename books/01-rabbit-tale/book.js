@@ -452,4 +452,3 @@ document.getElementById("book")?.addEventListener("touchend", (e) => {
         prevPage();
 });
 loadBook();
-export {};

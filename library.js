@@ -73,4 +73,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     const manifest = await loadLibrary();
     renderBooks(manifest);
 });
-export {};

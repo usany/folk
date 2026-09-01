@@ -2,11 +2,11 @@
   "name": "folk",
   "version": "1.0.0",
   "description": "Fairy Tale Moonlight Library – AI-generated picture books",
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "prebuild": "rm -f library.js books/01-rabbit-tale/book.js"
+    "prebuild": "rm -f library.js books/01-rabbit-tale/book.js",
+    "postbuild": "sed -i '' '/^export {}/d' library.js && sed -i '' '/^export {}/d' books/01-rabbit-tale/book.js"
   },
   "repository": {
     "type": "git",
