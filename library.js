@@ -1,54 +1,54 @@
 const FALLBACK_MANIFEST = {
-  title: "달빛 도서관",
-  subtitle: "AI가 그린 동화책 모음",
-  books: [
-    {
-      id: "01-rabbit-tale",
-      title: "토끼가 들려주는 토끼와 거북이",
-      subtitle: "우리가 몰랐던 토끼와 거북이 이야기의 숨겨진 진실",
-      url: "./books/01-rabbit-tale/index.html",
-      cover: "./books/01-rabbit-tale/images/cover.png",
-      pages: 12,
-      style: "dark satire"
-    }
-  ]
+    title: "달빛 도서관",
+    subtitle: "AI가 그린 동화책 모음",
+    books: [
+        {
+            id: "01-rabbit-tale",
+            title: "토끼가 들려주는 토끼와 거북이",
+            subtitle: "우리가 몰랐던 토끼와 거북이 이야기의 숨겨진 진실",
+            url: "./books/01-rabbit-tale/index.html",
+            cover: "./books/01-rabbit-tale/images/cover.png",
+            pages: 12,
+            style: "dark satire",
+        },
+    ],
 };
-
 async function loadLibrary() {
-  try {
-    const response = await fetch("./books/library.json");
-    if (!response.ok) throw new Error("Failed to load manifest");
-    return await response.json();
-  } catch (error) {
-    console.warn("Using fallback manifest:", error);
-    return FALLBACK_MANIFEST;
-  }
+    try {
+        const response = await fetch("./books/library.json");
+        if (!response.ok)
+            throw new Error("Failed to load manifest");
+        return (await response.json());
+    }
+    catch (error) {
+        console.warn("Using fallback manifest:", error);
+        return FALLBACK_MANIFEST;
+    }
 }
-
 function renderBooks(manifest) {
-  const grid = document.getElementById("book-grid");
-
-  if (!manifest.books || manifest.books.length === 0) {
-    grid.innerHTML = `
+    const grid = document.getElementById("book-grid");
+    if (!grid)
+        return;
+    if (!manifest.books || manifest.books.length === 0) {
+        grid.innerHTML = `
       <div class="empty-state" style="grid-column: 1/-1;">
         <h2>아직 책이 없습니다</h2>
         <p>동화책을 추가하면 여기에 표시됩니다.</p>
       </div>
     `;
-    return;
-  }
-
-  grid.innerHTML = manifest.books
-    .map(book => createBookCard(book))
-    .join("");
+        return;
+    }
+    grid.innerHTML = manifest.books
+        .map((book) => createBookCard(book))
+        .join("");
 }
-
 function createBookCard(book) {
-  const coverUrl = book.cover || "./placeholder.png";
-  const pageCount = book.pages ? `${book.pages}p` : "📖";
-  const style = book.style ? `<span class="badge">${escapeHtml(book.style)}</span>` : "";
-
-  return `
+    const coverUrl = book.cover || "./placeholder.png";
+    const pageCount = book.pages ? `${book.pages}p` : "📖";
+    const style = book.style
+        ? `<span class="badge">${escapeHtml(book.style)}</span>`
+        : "";
+    return `
     <a class="book-card" href="${escapeHtml(book.url)}" tabindex="0">
       <div class="card-cover" style="background-image:url('${escapeHtml(coverUrl)}')"></div>
       <div class="card-info">
@@ -62,16 +62,15 @@ function createBookCard(book) {
     </a>
   `;
 }
-
 function escapeHtml(text) {
-  if (!text) return "";
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML;
+    if (!text)
+        return "";
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
 }
-
-// Initialize on load
 document.addEventListener("DOMContentLoaded", async () => {
-  const manifest = await loadLibrary();
-  renderBooks(manifest);
+    const manifest = await loadLibrary();
+    renderBooks(manifest);
 });
+export {};

@@ -1,0 +1,26 @@
+{
+  "name": "folk",
+  "version": "1.0.0",
+  "description": "Fairy Tale Moonlight Library – AI-generated picture books",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prebuild": "rm -f library.js books/01-rabbit-tale/book.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/usany/folk.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/usany/folk/issues"
+  },
+  "homepage": "https://github.com/usany/folk#readme",
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}
