@@ -84,6 +84,13 @@ header.hero {
   letter-spacing: 0.05em;
 }
 
+#site-subtext {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
 #tagline {
   font-size: 1.1rem;
   color: var(--text-muted);
